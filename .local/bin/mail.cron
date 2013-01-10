@@ -15,7 +15,8 @@ LOG=/home/mturquette/mail/receive.log
 	# timestamp the log and fetch new mail
 	/bin/date >> $LOG
 	/usr/bin/offlineimap -o -a linaro -u basic >> $LOG
-	/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new
+	/home/mturquette/.local/bin/notmuch new >> $LOG
+	/home/mturquette/.local/bin/afew --tag --new >> $LOG
 ) 9>/var/lock/mail
 
 exit 0
