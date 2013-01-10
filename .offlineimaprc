@@ -1,0 +1,354 @@
+##################################################
+# General definitions
+##################################################
+
+[general]
+
+metadata = ~/.offlineimap
+#accounts = personal,ti,linaro,deferred,ti-exchange
+accounts = personal,linaro,deferred
+maxsyncaccounts = 3
+ui = basic
+ignore-readonly = no
+
+########## Advanced settings
+
+##################################################
+# Mailbox name recorder
+##################################################
+
+[mbnames]
+
+# offlineimap can record your mailbox names in a format you specify.
+# You can define the header, each mailbox item, the separator,
+# and the footer.  Here is an example for Mutt.
+# If enabled is yes, all six setting must be specified, even if they
+# are just the empty string "".
+#
+# The header, peritem, sep, and footer are all Python expressions passed
+# through eval, so you can (and must) use Python quoting.
+
+enabled = no
+filename = ~/.mutt/mailboxes.muttrc
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
+
+##################################################
+# Accounts
+##################################################
+
+[Account personal]
+
+localrepository = local-personal
+remoterepository = remote-personal
+
+autorefresh = 10
+quick = 10
+# presynchook = imapfilter
+# postsynchook = notifysync.sh
+status_backend = plain
+
+#[Account ti]
+#
+#localrepository = local-ti
+#remoterepository = remote-ti
+#
+#autorefresh = 10
+#quick = 10
+## presynchook = imapfilter
+## postsynchook = notifysync.sh
+##postsynchook = ionice -c 3 chrt --idle 0 /bin/bash -c "/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new"
+#status_backend = plain
+
+[Account linaro]
+
+localrepository = local-linaro
+remoterepository = remote-linaro
+
+autorefresh = 10
+quick = 10
+# presynchook = imapfilter
+# postsynchook = notifysync.sh
+#postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
+status_backend = plain
+
+[Account deferred]
+
+localrepository = local-deferred
+remoterepository = remote-deferred
+
+autorefresh = 10
+quick = 10
+# presynchook = imapfilter
+# postsynchook = notifysync.sh
+status_backend = plain
+
+#[Account ti-exchange]
+#
+#localrepository = local-ti-exchange
+#remoterepository = remote-ti-exchange
+#
+#autorefresh = 10
+#quick = 10
+## presynchook = imapfilter
+## postsynchook = noti-exchangefysync.sh
+##postsynchook = ionice -c 3 chrt --idle 0 /bin/bash -c "/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new"
+#status_backend = plain
+
+[Repository local-personal]
+
+type = Maildir
+
+localfolders = ~/mail/personal
+sep = .
+restoreatime = no
+
+nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+				re.sub('drafts', '\[Gmail\]\/Drafts',
+				re.sub('important', '\[Gmail\]\/Important',
+				re.sub('sent', '\[Gmail\]\/Sent Mail',
+				re.sub('spam', '\[Gmail\]\/Spam',
+				re.sub('flagged', '\[Gmail\]\/Starred',
+				re.sub('trash', '\[Gmail\]\/Trash',
+				re.sub('inbox', 'INBOX',
+				re.sub('misc', 'Misc',
+				re.sub('priority', 'Priority',
+				re.sub('follow_up', 'Follow up', folder)))))))))))
+
+[Repository remote-personal]
+
+type = Gmail
+remotehost = imap.gmail.com
+
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+remoteport = 993
+
+remoteuser = mturquette@gmail.com
+remotepass = FIXME
+
+subscribedonly = no
+keepalive = 60
+
+nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+				re.sub('\[Gmail\]\/Drafts', 'drafts',
+				re.sub('\[Gmail\]\/Important', 'important',
+				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+				re.sub('\[Gmail\]\/Spam', 'spam',
+				re.sub('\[Gmail\]\/Starred', 'flagged',
+				re.sub('\[Gmail\]\/Trash', 'trash',
+				re.sub('INBOX', 'inbox',
+				re.sub('Misc', 'misc',
+				re.sub('Priority', 'priority',
+				re.sub('Follow up', 'follow_up', folder)))))))))))
+
+#readonly = False
+realdelete = no
+
+#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
+#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+
+#[Repository local-ti]
+#
+#type = Maildir
+#
+#localfolders = ~/mail/offlineimap/ti
+#sep = .
+#restoreatime = no
+#
+#nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+#				re.sub('drafts', '\[Gmail\]\/Drafts',
+#				re.sub('important', '\[Gmail\]\/Important',
+#				re.sub('sent', '\[Gmail\]\/Sent Mail',
+#				re.sub('spam', '\[Gmail\]\/Spam',
+#				re.sub('flagged', '\[Gmail\]\/Starred',
+#				re.sub('trash', '\[Gmail\]\/Trash',
+#				re.sub('inbox', 'INBOX',
+#				re.sub('misc', 'Misc',
+#				re.sub('priority', 'Priority',
+#				re.sub('follow_up', 'Follow up', folder)))))))))))
+#
+#[Repository remote-ti]
+#
+#type = Gmail
+#remotehost = imap.gmail.com
+#
+#ssl = yes
+#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+#
+#remoteport = 993
+#
+#remoteuser = mturquette@ti.com
+#remotepass = FIXME
+#
+#subscribedonly = no
+#keepalive = 60
+#
+#nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+#				re.sub('\[Gmail\]\/Drafts', 'drafts',
+#				re.sub('\[Gmail\]\/Important', 'important',
+#				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+#				re.sub('\[Gmail\]\/Spam', 'spam',
+#				re.sub('\[Gmail\]\/Starred', 'flagged',
+#				re.sub('\[Gmail\]\/Trash', 'trash',
+#				re.sub('INBOX', 'inbox',
+#				re.sub('Misc', 'misc',
+#				re.sub('Priority', 'priority',
+#				re.sub('Follow up', 'follow_up', folder)))))))))))
+#
+##readonly = False
+#realdelete = no
+#
+#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+
+[Repository local-linaro]
+
+type = Maildir
+
+localfolders = ~/mail/linaro
+sep = .
+restoreatime = no
+
+nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+				re.sub('drafts', '\[Gmail\]\/Drafts',
+				re.sub('important', '\[Gmail\]\/Important',
+				re.sub('sent', '\[Gmail\]\/Sent Mail',
+				re.sub('spam', '\[Gmail\]\/Spam',
+				re.sub('flagged', '\[Gmail\]\/Starred',
+				re.sub('trash', '\[Gmail\]\/Trash',
+				re.sub('inbox', 'INBOX',
+				re.sub('misc', 'Misc',
+				re.sub('priority', 'Priority',
+				re.sub('follow_up', 'Follow up', folder)))))))))))
+
+[Repository remote-linaro]
+
+type = Gmail
+remotehost = imap.gmail.com
+
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+remoteport = 993
+
+remoteuser = mike.turquette@linaro.org
+remotepass = FIXME
+
+subscribedonly = no
+keepalive = 60
+
+nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+				re.sub('\[Gmail\]\/Drafts', 'drafts',
+				re.sub('\[Gmail\]\/Important', 'important',
+				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+				re.sub('\[Gmail\]\/Spam', 'spam',
+				re.sub('\[Gmail\]\/Starred', 'flagged',
+				re.sub('\[Gmail\]\/Trash', 'trash',
+				re.sub('INBOX', 'inbox',
+				re.sub('Misc', 'misc',
+				re.sub('Priority', 'priority',
+				re.sub('Follow up', 'follow_up', folder)))))))))))
+#readonly = False
+realdelete = no
+
+#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+
+[Repository local-deferred]
+
+type = Maildir
+
+localfolders = ~/mail/deferred
+sep = .
+restoreatime = no
+
+nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+				re.sub('drafts', '\[Gmail\]\/Drafts',
+				re.sub('important', '\[Gmail\]\/Important',
+				re.sub('sent', '\[Gmail\]\/Sent Mail',
+				re.sub('spam', '\[Gmail\]\/Spam',
+				re.sub('flagged', '\[Gmail\]\/Starred',
+				re.sub('trash', '\[Gmail\]\/Trash',
+				re.sub('inbox', 'INBOX',
+				re.sub('misc', 'Misc',
+				re.sub('priority', 'Priority',
+				re.sub('follow_up', 'Follow up', folder)))))))))))
+
+[Repository remote-deferred]
+
+type = Gmail
+remotehost = imap.gmail.com
+
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+remoteport = 993
+
+remoteuser = mturquette@deferred.io
+remotepass = FIXME
+
+subscribedonly = no
+keepalive = 60
+
+nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+				re.sub('\[Gmail\]\/Drafts', 'drafts',
+				re.sub('\[Gmail\]\/Important', 'important',
+				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+				re.sub('\[Gmail\]\/Spam', 'spam',
+				re.sub('\[Gmail\]\/Starred', 'flagged',
+				re.sub('\[Gmail\]\/Trash', 'trash',
+				re.sub('INBOX', 'inbox',
+				re.sub('Misc', 'misc',
+				re.sub('Priority', 'priority',
+				re.sub('Follow up', 'follow_up', folder)))))))))))
+
+#readonly = False
+realdelete = no
+
+#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+
+#[Repository local-ti-exchange]
+#
+#type = Maildir
+#
+#localfolders = ~/mail/offlineimap/ti-exchange
+#sep = .
+#restoreatime = no
+#
+#nametrans = lambda folder:	re.sub('inbox' ,'INBOX',
+#				re.sub('drafts', 'Drafts',
+#				re.sub('sent', 'Sent Items',
+#				re.sub('spam', 'Junk E-Mail',
+#				re.sub('trash', 'Deleted Items', folder)))))
+#
+#[Repository remote-ti-exchange]
+#
+#type = IMAP
+#remotehost = imap.mail.ti.com
+#
+#ssl = yes
+#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+#
+#remoteport = 993
+#
+#remoteuser = a0271365
+#remotepass = FIXME
+#
+#subscribedonly = no
+#keepalive = 60
+#
+#nametrans = lambda folder:	re.sub('INBOX', 'inbox',
+#				re.sub('Drafts', 'drafts',
+#				re.sub('Sent Items', 'sent',
+#				re.sub('Junk E-Mail', 'spam',
+#				re.sub('Deleted Items', 'trash', folder)))))
+#
+##readonly = False
+#realdelete = no
+#
+#folderfilter = lambda folder: folder in ['INBOX', 'Drafts', 'Sent Items', 'Junk E-Mail', 'Deleted Items']

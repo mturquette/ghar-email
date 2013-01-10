@@ -1,0 +1,9 @@
+#!/bin/bash
+
+PREFIX=~/src/linux/patches/incoming
+
+# save the mail to a temporary file
+cat - | cat > $PREFIX/temp
+
+# extract the subject and rename the file
+mv $PREFIX/temp "$PREFIX/`sed '/^Subject: */!d; s///; s/ /-/g; s/\//-/g; q' $PREFIX/temp`.patch"

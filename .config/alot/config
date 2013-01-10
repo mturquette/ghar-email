@@ -1,0 +1,142 @@
+# directory prefix for downloading attachments
+attachment_prefix = '~/Downloads'
+
+# number of colours to use
+colourmode = 256
+
+# solarized color theme
+#theme = default.theme
+theme = solarized_dark.theme
+
+# fill threadline with message content
+display_content_in_threadline = True
+
+# headers that get displayed by default
+#displayed_headers = force_list(default=list(From,To,Cc,Bcc,Subject))
+
+# headers that are hidden in envelope buffers by default
+#envelope_headers_blacklist = force_list(default=list(In-Reply-To,References))
+
+# how to print messages:
+# this specifies a shell command used for printing.
+# threads/messages are piped to this command as plain text.
+# muttprint/a2ps works nicely
+print_cmd = /usr/bin/lpr
+
+# number of spaces to replace tab characters
+tabwidth = 4
+
+# initial command when none is given as argument:
+initial_command = 'search tag:inbox and tag:unread and not tag:killed'
+
+# in case more than one account has an address book:
+# Set this to True to make tab completion for recipients during compose only
+# look in the abook of the account matching the sender address
+#complete_matching_abook_only = True
+
+# shut down when the last buffer gets closed
+quit_on_last_bclose = True
+
+# editor command
+# if unset, alot will first try the :envvar:`EDITOR` env variable, then :file:`/usr/bin/editor`
+editor_cmd = 'vim -c "set textwidth=72" -c "set wrap" -c "set spell" -c "set nocp"'
+
+[bindings]
+I = 'search tag:inbox and tag:unread and not tag:killed'
+i = 'search tag:inbox and not tag:killed'
+F = 'search tag:flagged'
+m =
+c = compose
+#q = cancel
+
+	[[search]]
+		a =
+		! =
+		f = toggletags flagged
+		m = toggletags inbox
+
+	[[thread]]
+		a = reply --all
+		| = pipeto --format=raw ~/.local/bin/mail.print
+
+[accounts]
+	[[linaro]]
+		realname = Mike Turquette
+		address = mturquette@linaro.org
+		#gpg_key = 5A7C9849
+		sendmail_command = msmtp -a linaro -t
+		#sent_box = maildir:///home/mturquette/mail/linaro
+		draft_box = maildir:///home/mturquette/mail/linaro/drafts
+		aliases = mike.turquette@linaro.org
+
+	# see,
+	# http://alot.readthedocs.org/en/latest/configuration/contacts_completion.html
+	# http://code.google.com/p/goobook/
+	# address book for this account
+#	[[[abook]]]
+#		# type identifier for address book
+#		type = option('shellcommand', 'abook', default=None)
+#		# command to lookup contacts in shellcommand abooks
+#		# it will be called with the lookup prefix as only argument
+#		command = string(default=None)
+#
+#		# regular expression used to match name/address pairs in the output of `command`
+#		# for shellcommand abooks
+#		regexp = string(default=None)
+#
+#		# contacts file used for type 'abook' address book
+#		abook_contacts_file = string(default='~/.abook/addressbook')
+
+[tags]
+	normal = 'bold','','dark cyan,bold','','#aaa',''
+
+	[[flagged]]
+		translated = ★
+		normal = '','','light red','','light red',''
+		focus = '','','light red','','light red',''
+
+	[[unread]]
+		translated = ✉
+		normal = '','','dark blue','','dark blue',''
+		focus = '','','dark blue','','dark blue',''
+
+	[[replied]]
+		translated = ✎
+		normal = '','','dark green','','dark green',''
+		focus = '','','dark green','','dark green',''
+
+	[[signed]]
+		translated = ⚷
+		normal = '','','light red','','light red',''
+		focus = '','','light red','','light red',''
+
+	[[killed]]
+		translated = ✝
+		normal = '','','light red','','light red',''
+		focus = '','','light red','','light red',''
+
+	[[attachment]]
+		translated = ✂
+		normal = '','','light magenta','','light magenta',''
+		focus = '','','light magenta','','light magenta',''
+
+	[[inbox]]
+		translated = '~'
+		normal = '','','dark blue','','dark blue',''
+		focus = '','','dark blue','','dark blue',''
+
+	[[sent]]
+		translated = ➥
+		normal = '','','dark green','','dark green',''
+		focus = '','','dark green','','dark green',''
+
+	[[drafts]]
+		translated = "✍"
+
+	[[to-me]]
+		translated = "☺"
+
+
+#	[[.*]]
+		#translated = ''
+#		normal = '','','','','',''

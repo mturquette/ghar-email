@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PID=$(pgrep offlineimap)
+LOCK=/var/lock/mail
+LOG=/home/mturquette/mail/receive.log
+
+# offlineimap freezes up a lot.  kill if previous job is still running
+[[ -n "$PID" ]] && kill $PID
+
+# sub-shell below is locked to prevent concurrency
+(
+	# bail early if lock is held
+	flock -n 9 || exit 1
+
+	# timestamp the log and fetch new mail
+	/bin/date >> $LOG
+	/usr/bin/offlineimap -o -a linaro -u basic >> $LOG
+	/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new
+) 9>/var/lock/mail
+
+exit 0
+
+# run this script periodically with the following cron job
+# */15 * * * *  ~/.local/bin/mail.cron
