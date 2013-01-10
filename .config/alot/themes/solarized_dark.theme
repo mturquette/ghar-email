@@ -119,27 +119,6 @@
             normal = 'default','default','%(16_base01)s','%(16_base03)s','%(256_base01)s','%(256_base03)s'
             focus = 'standout','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
             width = 'weight', 1
-    [[threadline-unread]]
-        normal = 'default','default','%(16_base0)s','%(16_base03)s','%(256_base0)s','%(256_base03)s'
-        tagged_with = 'unread'
-        [[[date]]]
-            normal = 'default','default','%(16_yellow)s','%(16_base03)s','%(256_yellow)s','%(256_base03)s'
-            focus = 'default','default','%(16_yellow)s','%(16_base02)s','%(256_yellow)s','%(256_base02)s'
-        [[[mailcount]]]
-            normal = 'default','default','%(16_base1)s','%(16_base03)s','%(256_base1)s','%(256_base03)s'
-            focus = 'default','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
-        [[[tags]]]
-            normal = 'bold','default','%(16_base1)s','%(16_base03)s','%(256_base1)s','%(256_base03)s'
-            focus = 'bold','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
-        [[[authors]]]
-            normal = 'default','default','%(16_yellow)s','%(16_base03)s','%(256_yellow)s','%(256_base03)s'
-            focus = 'default','default','%(16_yellow)s','%(16_base02)s','%(256_yellow)s','%(256_base02)s'
-        [[[subject]]]
-            normal = 'default','default','%(16_yellow)s','%(16_base03)s','%(256_yellow)s','%(256_base03)s'
-            focus = 'default','default','%(16_yellow)s','%(16_base02)s','%(256_yellow)s','%(256_base02)s'
-        [[[content]]]
-            normal = 'default','default','%(16_base01)s','%(16_base03)s','%(256_base01)s','%(256_base03)s'
-            focus = 'default','default','%(16_base01)s','%(16_base02)s','%(256_base01)s','%(256_base02)s'
     [[threadline-flagged]]
         normal = 'default','default','%(16_base0)s','%(16_base03)s','%(256_base0)s','%(256_base03)s'
         tagged_with = 'flagged'
@@ -158,6 +137,27 @@
         [[[subject]]]
             normal = 'default','default','%(16_red)s','%(16_base03)s','%(256_red)s','%(256_base03)s'
             focus = 'default','default','%(16_red)s','%(16_base02)s','%(256_red)s','%(256_base02)s'
+        [[[content]]]
+            normal = 'default','default','%(16_base01)s','%(16_base03)s','%(256_base01)s','%(256_base03)s'
+            focus = 'default','default','%(16_base01)s','%(16_base02)s','%(256_base01)s','%(256_base02)s'
+    [[threadline-unread]]
+        normal = 'default','default','%(16_base0)s','%(16_base03)s','%(256_base0)s','%(256_base03)s'
+        tagged_with = 'unread'
+        [[[date]]]
+            normal = 'default','default','%(16_yellow)s','%(16_base03)s','%(256_yellow)s','%(256_base03)s'
+            focus = 'default','default','%(16_yellow)s','%(16_base02)s','%(256_yellow)s','%(256_base02)s'
+        [[[mailcount]]]
+            normal = 'default','default','%(16_base1)s','%(16_base03)s','%(256_base1)s','%(256_base03)s'
+            focus = 'default','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
+        [[[tags]]]
+            normal = 'bold','default','%(16_base1)s','%(16_base03)s','%(256_base1)s','%(256_base03)s'
+            focus = 'bold','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
+        [[[authors]]]
+            normal = 'default','default','%(16_yellow)s','%(16_base03)s','%(256_yellow)s','%(256_base03)s'
+            focus = 'default','default','%(16_yellow)s','%(16_base02)s','%(256_yellow)s','%(256_base02)s'
+        [[[subject]]]
+            normal = 'default','default','%(16_yellow)s','%(16_base03)s','%(256_yellow)s','%(256_base03)s'
+            focus = 'default','default','%(16_yellow)s','%(16_base02)s','%(256_yellow)s','%(256_base02)s'
         [[[content]]]
             normal = 'default','default','%(16_base01)s','%(16_base03)s','%(256_base01)s','%(256_base03)s'
             focus = 'default','default','%(16_base01)s','%(16_base02)s','%(256_base01)s','%(256_base02)s'
