@@ -52,12 +52,13 @@ c = compose
 	[[search]]
 		a =
 		! =
-		f = toggletags flagged
+		s = toggletags flagged
 		m = toggletags inbox
 
 	[[thread]]
 		a = reply --all
 		| = pipeto --format=raw ~/.local/bin/mail.print
+		s = toggletags flagged
 
 [accounts]
 	[[linaro]]
