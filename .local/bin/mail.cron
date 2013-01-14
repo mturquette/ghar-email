@@ -3,6 +3,7 @@
 PID=$(pgrep offlineimap)
 LOCK=/var/lock/mail
 LOG=/home/mturquette/mail/receive.log
+export LD_LIBRARY_PATH=/home/mturquette/.local/lib:$LD_LIBRARY_PATH
 
 # offlineimap freezes up a lot.  kill if previous job is still running
 [[ -n "$PID" ]] && kill $PID
@@ -16,7 +17,7 @@ LOG=/home/mturquette/mail/receive.log
 	/bin/date >> $LOG
 	/usr/bin/offlineimap -o -a linaro -u basic >> $LOG
 	/home/mturquette/.local/bin/notmuch new >> $LOG
-	/home/mturquette/.local/bin/afew --tag --new >> $LOG
+	/home/mturquette/.local/bin/afew --tag --new --verbose 2>> $LOG
 ) 9>/var/lock/mail
 
 exit 0
