@@ -103,9 +103,8 @@
             focus = 'standout','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
             width = 'fit',5,5
         [[[tags]]]
-            normal = 'bold','default','%(16_base02)s','%(16_base03)s','%(256_base02)s','%(256_base03)s'
-            focus = 'standout','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
-            width = 'fit', 16, 16
+            normal = 'bold','default','%(16_base1)s','%(16_base03)s','%(256_base1)s','%(256_base03)s'
+            focus = 'bold','default','%(16_base1)s','%(16_base02)s','%(256_base1)s','%(256_base02)s'
         [[[authors]]]
             normal = 'default,underline','default','%(16_base0)s','%(16_base03)s','%(256_base0)s','%(256_base03)s'
             focus = 'standout','default','%(16_base0)s','%(16_base02)s','%(256_base0)s','%(256_base02)s'
