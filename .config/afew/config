@@ -15,52 +15,24 @@
 [KillThreadsFilter]
 [ListMailsFilter]
 #[ArchiveSentMailsFilter]
-[InboxFilter]
 [Filter.1]
-message = Tagging all mail sent to LAKML
+message = Tagging all mail sent to lakml
 query = to:linux-arm-kernel@lists.infradead.org
-tag = +lists +linux-arm-kernel
+tags = +linux-arm-kernel
 [Filter.2]
-message = Tagging all mail sent to Linaro-Dev
+message = Tagging all mail sent to linaro-dev
 query = to:linaro-dev@lists.linaro.org
-tag = +lists +linaro-dev
+tags = +linaro-dev
 [Filter.3]
-message = Tagging all mail sent to LOML
+message = Tagging all mail sent to loml
 query = to:linux-omap@vger.kernel.org
-tag = +lists +linux-omap
+tags = +linux-omap
 [Filter.4]
-message = Tagging list mails sent directly to me
-query = tag:lists AND to:mturquette@linaro.org
-tag = +to-me
-
-# Let's say you like the SpamFilter, but it is way too polite
-
-# 1. create an filter object and customize it
-#[SpamFilter.0] # note the index
-#message = meh
-
-# 2. create a new type and...
-#[ShitFilter(SpamFilter)]
-#message = I hatez teh spam!
-
-#    create an object or two...
-#[ShitFilter.0]
-#[ShitFilter.1]
-#message = Me hatez it too.
-
-# 3. drop a custom filter type in ~/.config/afew/
-#[MyCustomFilter]
-
-
-# To create a custom generic filter, define it inline with
-# your above filter chain. E.g.:
-
-# ...
-# [ListMailsFilter]
-#
-# [Filter.1]
-# query = from:boss@office.com
-# tag = +office
-#
-# [ArchiveSentMailsFilter]
-# ...
+message = Tagging all mail sent to lkml
+query = to:linux-kernel@vger.kernel.org
+tags = +linux-kernel
+[Filter.5]
+message = Tagging all mails sent directly to me
+query = to:mturquette
+tags = +to-me
+[InboxFilter]
