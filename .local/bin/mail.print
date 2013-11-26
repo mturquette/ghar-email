@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PREFIX=~/src/linux/patches/incoming
+#PREFIX=~/src/linux/patches/incoming
+PREFIX=/media/mturquette/src/linux/patches/incoming
 
 # save the mail to a temporary file
 cat - | cat > $PREFIX/temp

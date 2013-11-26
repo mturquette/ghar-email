@@ -2,7 +2,7 @@
 
 PID=$(pgrep offlineimap)
 LOCK=/var/lock/mail
-LOG=/home/mturquette/mail/receive.log
+#LOG=/var/log/mail.log
 export LD_LIBRARY_PATH=/home/mturquette/.local/lib:$LD_LIBRARY_PATH
 
 # offlineimap freezes up a lot.  kill if previous job is still running
@@ -14,11 +14,15 @@ export LD_LIBRARY_PATH=/home/mturquette/.local/lib:$LD_LIBRARY_PATH
 	flock -n 9 || exit 1
 
 	# timestamp the log and fetch new mail
-	/bin/date >> $LOG
-	/usr/bin/offlineimap -o -a linaro -u basic >> $LOG
-	/home/mturquette/.local/bin/notmuch new >> $LOG
-	/home/mturquette/.local/bin/afew --tag --new --verbose 2>> $LOG
-) 9>/var/lock/mail
+	#/bin/date >> $LOG
+	#/usr/bin/offlineimap -o -a linaro -u basic >> $LOG
+	#/home/mturquette/.local/bin/notmuch new >> $LOG
+	#/home/mturquette/.local/bin/afew --tag --new --verbose 2>> $LOG
+
+	/usr/bin/offlineimap -o -a linaro -u basic | /usr/bin/logger
+	/home/mturquette/.local/bin/notmuch new | /usr/bin/logger
+	/home/mturquette/.local/bin/afew --tag --new --verbose 2>&1 >/dev/null | /usr/bin/logger
+) 9>$LOCK
 
 exit 0
 
