@@ -27,7 +27,8 @@ print_cmd = /usr/bin/lpr
 tabwidth = 4
 
 # initial command when none is given as argument:
-initial_command = 'search tag:inbox and tag:unread and not tag:killed'
+#initial_command = 'search tag:inbox and tag:unread and not tag:killed'
+initial_command = 'search tag:to-me and tag:unread and not tag:killed'
 
 # in case more than one account has an address book:
 # Set this to True to make tab completion for recipients during compose only
