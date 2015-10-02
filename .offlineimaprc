@@ -5,8 +5,8 @@
 [general]
 
 metadata = ~/.offlineimap
-#accounts = personal,ti,linaro,deferred,ti-exchange
-accounts = personal,linaro,deferred
+#accounts = personal,ti,linaro,deferred,ti-exchange,skully
+accounts = personal,linaro,deferred,baylibre
 maxsyncaccounts = 3
 ui = basic
 ignore-readonly = no
@@ -38,6 +38,17 @@ footer = "\n"
 ##################################################
 # Accounts
 ##################################################
+
+[Account spimdotz]
+
+localrepository = local-spimdotz
+remoterepository = remote-spimdotz
+
+autorefresh = 10
+quick = 10
+# presynchook = imapfilter
+# postsynchook = notifysync.sh
+status_backend = plain
 
 [Account personal]
 
@@ -74,6 +85,18 @@ quick = 10
 #postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
 status_backend = plain
 
+[Account baylibre]
+
+localrepository = local-baylibre
+remoterepository = remote-baylibre
+
+autorefresh = 10
+quick = 10
+# presynchook = imapfilter
+# postsynchook = notifysync.sh
+#postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
+status_backend = plain
+
 [Account deferred]
 
 localrepository = local-deferred
@@ -96,6 +119,62 @@ status_backend = plain
 ## postsynchook = noti-exchangefysync.sh
 ##postsynchook = ionice -c 3 chrt --idle 0 /bin/bash -c "/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new"
 #status_backend = plain
+
+[Repository local-spimdotz]
+
+type = Maildir
+
+localfolders = ~/mail/spimdotz
+sep = .
+restoreatime = no
+
+nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+				re.sub('drafts', '\[Gmail\]\/Drafts',
+				re.sub('important', '\[Gmail\]\/Important',
+				re.sub('sent', '\[Gmail\]\/Sent Mail',
+				re.sub('spam', '\[Gmail\]\/Spam',
+				re.sub('flagged', '\[Gmail\]\/Starred',
+				re.sub('trash', '\[Gmail\]\/Trash',
+				re.sub('inbox', 'INBOX',
+				re.sub('misc', 'Misc',
+				re.sub('priority', 'Priority',
+				re.sub('follow_up', 'Follow up', folder)))))))))))
+
+[Repository remote-spimdotz]
+
+type = Gmail
+remotehost = imap.gmail.com
+
+ssl = yes
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+remoteport = 993
+
+remoteuser = spimdotz@gmail.com
+remotepass = FIXME
+
+subscribedonly = no
+keepalive = 60
+
+nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+				re.sub('\[Gmail\]\/Drafts', 'drafts',
+				re.sub('\[Gmail\]\/Important', 'important',
+				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+				re.sub('\[Gmail\]\/Spam', 'spam',
+				re.sub('\[Gmail\]\/Starred', 'flagged',
+				re.sub('\[Gmail\]\/Trash', 'trash',
+				re.sub('INBOX', 'inbox',
+				re.sub('Misc', 'misc',
+				re.sub('Priority', 'priority',
+				re.sub('Follow up', 'follow_up', folder)))))))))))
+
+#readonly = False
+realdelete = no
+
+#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
+#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
 
 [Repository local-personal]
 
@@ -258,6 +337,59 @@ realdelete = no
 #folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
 folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
 
+[Repository local-baylibre]
+
+type = Maildir
+
+localfolders = ~/mail/baylibre
+sep = .
+restoreatime = no
+
+nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+				re.sub('drafts', '\[Gmail\]\/Drafts',
+				re.sub('important', '\[Gmail\]\/Important',
+				re.sub('sent', '\[Gmail\]\/Sent Mail',
+				re.sub('spam', '\[Gmail\]\/Spam',
+				re.sub('flagged', '\[Gmail\]\/Starred',
+				re.sub('trash', '\[Gmail\]\/Trash',
+				re.sub('inbox', 'INBOX',
+				re.sub('misc', 'Misc',
+				re.sub('priority', 'Priority',
+				re.sub('follow_up', 'Follow up', folder)))))))))))
+
+[Repository remote-baylibre]
+
+type = Gmail
+remotehost = imap.gmail.com
+
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+remoteport = 993
+
+remoteuser = mturquette@baylibre.com
+remotepass = FIXME
+
+subscribedonly = no
+keepalive = 60
+
+nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+				re.sub('\[Gmail\]\/Drafts', 'drafts',
+				re.sub('\[Gmail\]\/Important', 'important',
+				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+				re.sub('\[Gmail\]\/Spam', 'spam',
+				re.sub('\[Gmail\]\/Starred', 'flagged',
+				re.sub('\[Gmail\]\/Trash', 'trash',
+				re.sub('INBOX', 'inbox',
+				re.sub('Misc', 'misc',
+				re.sub('Priority', 'priority',
+				re.sub('Follow up', 'follow_up', folder)))))))))))
+#readonly = False
+realdelete = no
+
+#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+
 [Repository local-deferred]
 
 type = Maildir
@@ -352,3 +484,68 @@ folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
 #realdelete = no
 #
 #folderfilter = lambda folder: folder in ['INBOX', 'Drafts', 'Sent Items', 'Junk E-Mail', 'Deleted Items']
+
+[Account skully]
+
+localrepository = local-skully
+remoterepository = remote-skully
+
+autorefresh = 10
+quick = 10
+# presynchook = imapfilter
+# postsynchook = notifysync.sh
+#postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
+status_backend = plain
+
+[Repository local-skully]
+
+type = Maildir
+
+localfolders = ~/mail/skully
+sep = .
+restoreatime = no
+
+nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
+				re.sub('drafts', '\[Gmail\]\/Drafts',
+				re.sub('important', '\[Gmail\]\/Important',
+				re.sub('sent', '\[Gmail\]\/Sent Mail',
+				re.sub('spam', '\[Gmail\]\/Spam',
+				re.sub('flagged', '\[Gmail\]\/Starred',
+				re.sub('trash', '\[Gmail\]\/Trash',
+				re.sub('inbox', 'INBOX',
+				re.sub('misc', 'Misc',
+				re.sub('priority', 'Priority',
+				re.sub('follow_up', 'Follow up', folder)))))))))))
+
+[Repository remote-skully]
+
+type = Gmail
+remotehost = imap.gmail.com
+
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+remoteport = 993
+
+remoteuser = mturquette@skullyhelmets.com
+remotepass = FIXME
+
+subscribedonly = no
+keepalive = 60
+
+nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
+				re.sub('\[Gmail\]\/Drafts', 'drafts',
+				re.sub('\[Gmail\]\/Important', 'important',
+				re.sub('\[Gmail\]\/Sent Mail', 'sent',
+				re.sub('\[Gmail\]\/Spam', 'spam',
+				re.sub('\[Gmail\]\/Starred', 'flagged',
+				re.sub('\[Gmail\]\/Trash', 'trash',
+				re.sub('INBOX', 'inbox',
+				re.sub('Misc', 'misc',
+				re.sub('Priority', 'priority',
+				re.sub('Follow up', 'follow_up', folder)))))))))))
+#readonly = False
+realdelete = no
+
+#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']

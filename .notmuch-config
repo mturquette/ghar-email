@@ -11,7 +11,7 @@
 # configured here named ".notmuch".
 #
 [database]
-path=/home/mturquette/mail
+path=$HOME/mail
 
 # User configuration
 #
@@ -29,9 +29,10 @@ path=/home/mturquette/mail
 # address to which the original email was addressed.
 #
 [user]
-name=Mike Turquette
-primary_email=mturquette@linaro.org
-other_email=mturquette@ti.com;mturquette@gmail.com;mturquette@deferred.io;
+name=Michael Turquette
+primary_email=mturquette@baylibre.com
+other_email=mike.turquette@linaro.org;mturquette@linaro.org;spimdotz@gmail.com
+#other_email=mturquette@ti.com;mturquette@gmail.com;mturquette@deferred.io;
 
 # Configuration for "notmuch new"
 #
