@@ -135,7 +135,7 @@ nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
 				re.sub('spam', '\[Gmail\]\/Spam',
 				re.sub('flagged', '\[Gmail\]\/Starred',
 				re.sub('trash', '\[Gmail\]\/Trash',
-				re.sub('inbox', 'INBOX',
+				re.sub('INBOX', 'INBOX',
 				re.sub('misc', 'Misc',
 				re.sub('priority', 'Priority',
 				re.sub('follow_up', 'Follow up', folder)))))))))))
@@ -164,7 +164,7 @@ nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('\[Gmail\]\/Spam', 'spam',
 				re.sub('\[Gmail\]\/Starred', 'flagged',
 				re.sub('\[Gmail\]\/Trash', 'trash',
-				re.sub('INBOX', 'inbox',
+				re.sub('INBOX', 'INBOX',
 				re.sub('Misc', 'misc',
 				re.sub('Priority', 'priority',
 				re.sub('Follow up', 'follow_up', folder)))))))))))
@@ -174,7 +174,12 @@ realdelete = no
 
 #folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
 #folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
-folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts',
+					 '[Gmail]/Important', '[Gmail]/Sent Mail',
+					 '[Gmail]/Spam', '[Gmail]/Starred',
+					 '[Gmail]/Trash', 'INBOX', 'linux-kernel',
+					 'linux-arm-kernel', 'linux-clk',
+					 'linux-pm', 'bl-patch-review']
 
 [Repository local-personal]
 
@@ -352,7 +357,7 @@ nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
 				re.sub('spam', '\[Gmail\]\/Spam',
 				re.sub('flagged', '\[Gmail\]\/Starred',
 				re.sub('trash', '\[Gmail\]\/Trash',
-				re.sub('inbox', 'INBOX',
+				re.sub('INBOX', 'INBOX',
 				re.sub('misc', 'Misc',
 				re.sub('priority', 'Priority',
 				re.sub('follow_up', 'Follow up', folder)))))))))))
@@ -380,7 +385,7 @@ nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('\[Gmail\]\/Spam', 'spam',
 				re.sub('\[Gmail\]\/Starred', 'flagged',
 				re.sub('\[Gmail\]\/Trash', 'trash',
-				re.sub('INBOX', 'inbox',
+				re.sub('INBOX', 'INBOX',
 				re.sub('Misc', 'misc',
 				re.sub('Priority', 'priority',
 				re.sub('Follow up', 'follow_up', folder)))))))))))
@@ -388,7 +393,13 @@ nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 realdelete = no
 
 #folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
-folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
+folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts',
+					 '[Gmail]/Important', '[Gmail]/Sent Mail',
+					 '[Gmail]/Spam', '[Gmail]/Starred',
+					 '[Gmail]/Trash', 'INBOX', 'linux-kernel',
+					 'linux-arm-kernel', 'linux-clk',
+					 'linux-pm', 'bl-patch-review']
 
 [Repository local-deferred]
 
