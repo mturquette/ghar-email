@@ -1,0 +1,125 @@
+# Paths ----------------------------------------------
+set folder           = ~/mail/spimdotz                 # mailbox location
+set alias_file       = ~/.mutt/alias          # where to store aliases
+#set header_cache     = ~/.mutt/cache/headers # where to store headers
+#set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
+#set certificate_file = ~/.mutt/certificates  # where to store certs
+#set mailcap_path     = ~/.mutt/mailcap       # entries for filetypes
+set tmpdir           = /tmp                  # where to keep temp files
+#set signature        = ~/.mutt/sig            # my signature file
+
+# notmuch Options ------------------------------------
+#set record="~/Mail/Maildir/sent-mail"
+#set nm_record = yes
+#set nm_record_tags = "-inbox me archive"
+set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,inbox"
+
+#set postponed="~/Mail/Maildir/postponed"
+
+set nm_default_uri="notmuch:///home/mturquette/mail/spimdotz/"
+set nm_query_type="threads"
+set virtual_spoolfile=yes
+set nm_exclude_tags="killed"
+
+virtual-mailboxes \
+	"INBOX"            "notmuch://?query=tag:inbox and NOT tag:archive" \
+	"linux-clk" "notmuch://?query=tag:linux-arm-kernel" \
+	"linux-pm" "notmuch://?query=tag:linux-arm-kernel" \
+	"linux-kernel"     "notmuch://?query=tag:linux-kernel" \
+	"linux-arm-kernel" "notmuch://?query=tag:linux-arm-kernel" \
+
+# Basic Options --------------------------------------
+set wait_key = no        # shut up, mutt
+set mbox_type = Maildir  # mailbox type
+set timeout = 3          # idle time before scanning
+set mail_check = 0       # minimum time between scans
+unset move               # gmail does that
+set delete               # don't ask, just do
+unset confirmappend      # don't ask, just do!
+#set quit                 # don't ask, just do!!
+unset mark_old           # read/new is good enough for me
+set beep_new             # bell on new mails
+set pipe_decode          # strip headers and eval mimes when piping
+set thorough_search      # strip headers and eval mimes before searching
+
+## Sidebar Patch --------------------------------------
+#set sidebar_delim   = '  │'
+#set sidebar_visible = yes
+#set sidebar_width   = 24
+#color sidebar_new color221 color233
+
+## mutt-kz sidebar
+#set sidebar_width   = 26
+#set sidebar_visible = yes               # set to "no" to disable sidebar view at startup
+#color sidebar_new yellow default
+#set sort_sidebar = unsorted
+
+## karel zack's mutt-kz sidebar
+#mailboxes `/home/kzak/bin/maildir-ls ~/Mail/Maildir`
+set sidebar_width = 35
+set sidebar_visible = yes
+color sidebar_new yellow default
+color progress default magenta
+color sidebar green default
+bind index <left> sidebar-prev
+bind index <right> sidebar-next
+bind index <space> sidebar-open
+bind index <Esc>S sidebar-toggle
+
+## sidebar bindings
+#bind index <left> sidebar-prev          # got to previous folder in sidebar
+#bind index <right> sidebar-next         # got to next folder in sidebar
+##bind index <space> sidebar-open         # open selected folder from sidebar
+#
+## sidebar toggle
+#macro index ,@) "<enter-command> set sidebar_visible=no; macro index ~ ,@( 'Toggle sidebar'<Enter>"
+#macro index ,@( "<enter-command> set sidebar_visible=yes; macro index ~ ,@) 'Toggle sidebar'<Enter>"
+#macro index ~ ,@( 'Toggle sidebar'      # toggle the sidebar
+
+# Status Bar -----------------------------------------
+set status_chars  = " *%A"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+## mutt-kz status bar
+## something approximating my alot theme...
+#set index_format="%Z %[%a %b %d %R]  %-16.15F %?M?(%3M)&     ? %s %> %?g?%g?"
+##set index_format="%Z  %[%d/%b]  %-16.15F %?M?(%3M)&     ? %s %> %?g?%g?"
+
+# Header Options -------------------------------------
+ignore *                                # ignore all headers
+unignore from: to: cc: date: subject:   # show only these
+#unhdr_order *                           # some distros order things by default
+#hdr_order from: to: cc: date: subject:  # and in this order
+
+## Sven's draconian header weeding (http://www.mutt.org/doc/manual/manual-3.html#ss3.8)
+#ignore *
+#unignore from date subject to cc
+#unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
+#unignore posted-to:
+
+# Account Settings -----------------------------------
+
+# Default inbox.
+#set spoolfile = "+spimdotz/inbox"
+
+# Alternate email addresses.
+#alternates sjl@pculture.org still\.?life@gmail.com steve@ladyluckblues.com steve@pculture.org
+
+# Mailboxes to show in the sidebar.
+mailboxes inbox \
+          archive \
+          sent \
+          drafts \
+
+# Other special folders.
+set mbox      = "archive"
+set postponed = "drafts"
+
+#mailboxes +spimdotz/inbox \
+#          +spimdotz/archive \
+#          +spimdotz/sent \
+#          +spimdotz/drafts \
+#
+## Other special folders.
+#set mbox      = "+spimdotz/archive"
+#set postponed = "+spimdotz/drafts"
