@@ -1,0 +1,13 @@
+#!/usr/bin/env fish
+
+# change the list below to match your mailing lists
+set mailing_lists linux-kernel@vger.kernel.org \
+		  linux-arm-kernel@lists.infradead.org \
+		  linux-pm@vger.kernel.org \
+		  linux-clk@vger.kernel.org
+
+for list in $mailing_lists;
+	set tag (echo $list | sed 's/@.*$//');
+	#echo $tag $list;
+	eval notmuch tag +$tag -- tag:new and to:$list and not tag:$tag
+end
