@@ -3,25 +3,25 @@
 PID=$(pgrep offlineimap)
 LOCK=/var/lock/mail
 #LOG=/var/log/mail.log
-export LD_LIBRARY_PATH=/home/mturquette/.local/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=/home/mturquette/.local/lib:$LD_LIBRARY_PATH
 
 # offlineimap freezes up a lot.  kill if previous job is still running
 [[ -n "$PID" ]] && kill $PID
 
 # sub-shell below is locked to prevent concurrency
 (
+	# bail if encryption key is not unlocked
+	# we use this in offlineimap.py to fetch imap/smtp password
+	eval `keychain --noask --eval 84174131`
+
 	# bail early if lock is held
 	flock -n 9 || exit 1
 
-	# timestamp the log and fetch new mail
-	#/bin/date >> $LOG
-	#/usr/bin/offlineimap -o -a linaro -u basic >> $LOG
-	#/home/mturquette/.local/bin/notmuch new >> $LOG
-	#/home/mturquette/.local/bin/afew --tag --new --verbose 2>> $LOG
+	/usr/bin/offlineimap -o -a baylibre -u basic | /usr/bin/logger
 
-	/usr/bin/offlineimap -o -a linaro -u basic | /usr/bin/logger
-	/home/mturquette/.local/bin/notmuch new | /usr/bin/logger
-	/home/mturquette/.local/bin/afew --tag --new --verbose 2>&1 >/dev/null | /usr/bin/logger
+	# old notmuch stuff, no longer used
+	#/home/mturquette/.local/bin/notmuch new | /usr/bin/logger
+	#/home/mturquette/.local/bin/afew --tag --new --verbose 2>&1 >/dev/null | /usr/bin/logger
 ) 9>$LOCK
 
 exit 0
