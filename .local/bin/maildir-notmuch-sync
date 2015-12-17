@@ -63,7 +63,7 @@
 # Maildir Information
 # ----------------------------------
 
-INBOX="INBOX"       # (mutt's spool dir)  - both the tag and folder
+INBOX="inbox"       # (mutt's spool dir)  - both the tag and folder
 SENT="sent"         # (mutt's record dir) - both the tag and folder
 ARCHIVE="archive"   # (mutt's mbox/received) - both the tag and folder
 TRASH="trash"       # trash maildir, gmail requires for real deletion
