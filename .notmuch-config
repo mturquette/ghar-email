@@ -11,7 +11,8 @@
 # configured here named ".notmuch".
 #
 [database]
-path=$HOME/mail
+# Rely on default, which is $HOME/mail
+#path=$HOME/mail
 
 # User configuration
 #
