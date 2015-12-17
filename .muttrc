@@ -1,5 +1,114 @@
+set mbox_type=Maildir
+# This is where notmuchfs is mounted. Trailing slash required.
+#set folder=~/my_notmuchfs_mountpoint/
+set folder= ~/mail/.notmuch/notmuchfs
+
+# The directory inside the above folder to open by default.
+#set spoolfile=+inbox/
+set spoolfile="+tag:inbox and tag:unread"
+
+# Standard mutt, not notmuchfs specific.
+set postponed=~/mail/baylibre/drafts
+set record=~/mail/baylibre/sent
+mailboxes + $record $postponed
+
+# Trim some fields from the folder viewer that don't make much sense. Tune to
+# taste.
+set folder_format="%2C %N %8s %d %f"
+
+# Display the X-Label header, so you can see the notmuch tags of a message.
+# Perhaps think about 'hdr_order' too.
+set weed=yes
+unignore X-Label
+
+# Header caching is a fine addition to any mutt.
+set header_cache=~/.mutt/hcache/
+# But body caching doesn't make so much sense with local mail.
+# The X-Label header changing dynamically also messes with this, so disable it.
+unset message_cachedir
+
+# Collapse all threads when switching folders
+folder-hook . "exec collapse-all"
+
+#----------------------------------------------------------------------------
+
+# A macro to reload the contents of the mailbox. Use this when the results of a
+# query have changed, and you want to see them.
+macro index "#" '<sync-mailbox><change-folder>^<enter>' "Reload mailbox"
+
+# List or alter notmuch tags of a message or set of tagged messages, by passing
+# through a script to the notmuch CLI.
+#macro index,pager ",T" "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag<enter>" "Manage notmuch tags"
+macro index,pager "l" "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag<enter>" "Manage notmuch tags"
+
+# Shortcuts for managing specific tags.
+# e.g.:
+#macro index,pager ",ti"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +interesting_tag<enter>" "Add 'interesting_tag' tag"
+#macro index,pager ",tI"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -interesting_tag<enter>" "Remove 'interesting_tag' tag"
+
+
+# Creating a new notmuch search is as simple as creating a new directory inside
+# notmuchfs. This macro does just that.
+#
+# The default search stem to use. May be empty.
+# Beware! Setting "pipe_decode" in .muttrc defeats the method used below
+set my_default_search=""
+macro index "/" "<shell-escape>prompt_mkdir $folder$my_default_search <enter><change-folder>?" "Create a new notmuchfs query mailbox"
+
+# custom tag macro
+macro index,pager ",tw" "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +watch<enter>" "Add 'watch' tag"
+
+#macro index,pager "e"   "<pipe-message>cat > /home/mturquette/msg"
+macro index,pager "e"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -inbox<enter>" "Remove 'inbox' tag"
+
+macro index,pager "I"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -unread<enter>" "Remove 'unread' tag"
+macro index,pager "U"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +unread<enter><toggle-new>" "Add 'unread' tag"
+
+macro index,pager "s"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +flagged<enter>" "Add 'flagged' tag"
+macro index,pager "S"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -flagged<enter>" "Remove 'flagged' tag"
+# need replacement for S - new notmuch query
+# need replacement for s - save message
+
+macro index,pager "+"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +important<enter>" "Add 'important' tag"
+macro index,pager "-"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -important<enter>" "Remove 'important' tag"
+
+macro index,pager "!"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +spam<enter>" "Add 'spam' tag"
+
+# custom navigation macro
+macro index,pager gi <change-folder>"=inbox<enter>" "Go to Inbox"
+macro index,pager gs <change-folder>"=tag:flagged<enter>" "Go to Starred"
+macro index,pager gd <change-folder>"=tag:drafts<enter>" "Go to Drafts"
+macro index,pager gt <change-folder>"=tag:sent<enter>" "Go to Sent"
+macro index,pager gl <change-folder>
+# non-standard, just for me
+macro index,pager gc <change-folder>"=clk" "Go to linux-clk"
+
+# pager macros, deviate a bit from Gmail:
+# In Gmail we use j/k to navigate to next/previous threads/conversations and
+# up/down arrows to scroll through a message body
+# In mutt we use j/k to scroll through a message body (like vim), and up/down
+# arrows to navigate to next/previous threads/conversations
+macro pager u <exit> "Back to threadlist"
+macro pager n <next-subthread> "Read next message"
+macro pager p <previous-subthread> "Read previous message"
+macro pager r <reply> "Reply"
+macro pager a <group-reply> "Reply all"
+
+macro index,pager c <mail> "Compose"
+
+macro index x <tag-thread> "Select conversation"
+# note, 't' still tags individual entires/messages
+
+# Colorise messages with particular flags.
+# e.g.:
+#color index    red      default        "~h '^X-Label: .*interesting_tag.*$'"
+
+#----------------------------------------------------------------------------
+
+
 # Paths ----------------------------------------------
-set folder           = ~/mail/spimdotz                 # mailbox location
+#set folder           = ~/mail/spimdotz                 # mailbox location
+#set folder           = ~/.notmuch/notmuchfs
 set alias_file       = ~/.mutt/alias          # where to store aliases
 #set header_cache     = ~/.mutt/cache/headers # where to store headers
 #set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
@@ -12,21 +121,21 @@ set tmpdir           = /tmp                  # where to keep temp files
 #set record="~/Mail/Maildir/sent-mail"
 #set nm_record = yes
 #set nm_record_tags = "-inbox me archive"
-set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,inbox"
+#set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,inbox"
 
 #set postponed="~/Mail/Maildir/postponed"
 
-set nm_default_uri="notmuch:///home/mturquette/mail/spimdotz/"
-set nm_query_type="threads"
-set virtual_spoolfile=yes
-set nm_exclude_tags="killed"
-
-virtual-mailboxes \
-	"INBOX"            "notmuch://?query=tag:inbox and NOT tag:archive" \
-	"linux-clk" "notmuch://?query=tag:linux-arm-kernel" \
-	"linux-pm" "notmuch://?query=tag:linux-arm-kernel" \
-	"linux-kernel"     "notmuch://?query=tag:linux-kernel" \
-	"linux-arm-kernel" "notmuch://?query=tag:linux-arm-kernel" \
+#set nm_default_uri="notmuch:///home/mturquette/mail/spimdotz/"
+#set nm_query_type="threads"
+#set virtual_spoolfile=yes
+#set nm_exclude_tags="killed"
+#
+#virtual-mailboxes \
+#	"INBOX"            "notmuch://?query=tag:inbox and NOT tag:archive" \
+#	"linux-clk" "notmuch://?query=tag:linux-arm-kernel" \
+#	"linux-pm" "notmuch://?query=tag:linux-arm-kernel" \
+#	"linux-kernel"     "notmuch://?query=tag:linux-kernel" \
+#	"linux-arm-kernel" "notmuch://?query=tag:linux-arm-kernel" \
 
 # Basic Options --------------------------------------
 set wait_key = no        # shut up, mutt
@@ -34,12 +143,12 @@ set mbox_type = Maildir  # mailbox type
 set timeout = 3          # idle time before scanning
 set mail_check = 0       # minimum time between scans
 unset move               # gmail does that
-set delete               # don't ask, just do
+unset delete               # don't ask, just do
 unset confirmappend      # don't ask, just do!
 #set quit                 # don't ask, just do!!
 unset mark_old           # read/new is good enough for me
 set beep_new             # bell on new mails
-set pipe_decode          # strip headers and eval mimes when piping
+#set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 
 ## Sidebar Patch --------------------------------------
@@ -56,15 +165,15 @@ set thorough_search      # strip headers and eval mimes before searching
 
 ## karel zack's mutt-kz sidebar
 #mailboxes `/home/kzak/bin/maildir-ls ~/Mail/Maildir`
-set sidebar_width = 35
-set sidebar_visible = yes
-color sidebar_new yellow default
-color progress default magenta
-color sidebar green default
-bind index <left> sidebar-prev
-bind index <right> sidebar-next
-bind index <space> sidebar-open
-bind index <Esc>S sidebar-toggle
+#set sidebar_width = 35
+#set sidebar_visible = yes
+#color sidebar_new yellow default
+#color progress default magenta
+#color sidebar green default
+#bind index <left> sidebar-prev
+#bind index <right> sidebar-next
+#bind index <space> sidebar-open
+#bind index <Esc>S sidebar-toggle
 
 ## sidebar bindings
 #bind index <left> sidebar-prev          # got to previous folder in sidebar
@@ -106,14 +215,14 @@ unignore from: to: cc: date: subject:   # show only these
 #alternates sjl@pculture.org still\.?life@gmail.com steve@ladyluckblues.com steve@pculture.org
 
 # Mailboxes to show in the sidebar.
-mailboxes inbox \
-          archive \
-          sent \
-          drafts \
+#mailboxes inbox \
+#          archive \
+#          sent \
+#          drafts \
 
 # Other special folders.
-set mbox      = "archive"
-set postponed = "drafts"
+#set mbox      = "archive"
+#set postponed = "drafts"
 
 #mailboxes +spimdotz/inbox \
 #          +spimdotz/archive \
@@ -123,3 +232,212 @@ set postponed = "drafts"
 ## Other special folders.
 #set mbox      = "+spimdotz/archive"
 #set postponed = "+spimdotz/drafts"
+
+# Index View Options ---------------------------------
+set date_format = "%m/%d"
+set index_format = "[%Z]  %D  %-20.20F  %s"
+set sort = threads                         # like gmail
+set sort_aux = reverse-last-date-received  # like gmail
+set uncollapse_jump                        # don't collapse on an unread message
+set sort_re                                # thread based on regex
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+# Pager View Options ---------------------------------
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+set menu_scroll            # scroll in menus
+set tilde                  # show tildes like in vim
+unset markers              # no ugly plus signs
+
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+alternative_order text/plain text/enriched text/html
+
+# Pager Key Bindings ---------------------------------
+bind pager k  previous-line
+bind pager j  next-line
+bind pager gg top
+bind pager G  bottom
+
+bind pager R  group-reply
+
+# View attachments properly.
+bind attach <return> view-mailcap
+
+# Compose View Options -------------------------------
+set realname = "Michael Turquette"   # who am i?
+set envelope_from                    # which from?
+set sig_dashes                       # dashes before sig
+set edit_headers                     # show headers when composing
+set fast_reply                       # skip to compose when replying
+set askcc                            # ask for CC:
+set fcc_attach                       # save attachments with the body
+unset mime_forward                   # forward attachments as part of body
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode                   # decode when forwarding
+set attribution = "On %d, %n wrote:" # format of quoting header
+set reply_to                         # reply to Reply to: field
+set reverse_name                     # reply as whomever it was to
+set include                          # include message in replies
+set forward_quote                    # include message in forwards
+
+set editor = "vim -c \"set textwidth=72\" -c \"set wrap\" -c \"set spell\" -c \"set nocp\""
+
+set from = "mturquette@baylibre.com"
+set sendmail = "/usr/bin/msmtp -a baylibre"
+set sendmail_wait = 0
+unset record
+
+# -----------------------------------------------------------------
+
+
+# vim: filetype=muttrc
+
+#
+#
+# make sure that you are using mutt linked against slang, not ncurses, or
+# suffer the consequences of weird color issues. use "mutt -v" to check this.
+
+# custom body highlights -----------------------------------------------
+# highlight my name and other personally relevant strings
+#color body          yellow          default         "(ethan|schoonover)"
+# custom index highlights ----------------------------------------------
+# messages which mention my name in the body
+#color index         yellow          default         "~b \"phil(_g|\!| gregory| gold)|pgregory\" !~N !~T !~F !~p !~P"
+#color index         J_cream         brightwhite     "~b \"phil(_g|\!| gregory| gold)|pgregory\" ~N !~T !~F !~p !~P"
+#color index         yellow          cyan            "~b \"phil(_g|\!| gregory| gold)|pgregory\" ~T !~F !~p !~P"
+#color index         yellow          J_magent        "~b \"phil(_g|\!| gregory| gold)|pgregory\" ~F !~p !~P"
+## messages which are in reference to my mails
+#color index         J_magent        default         "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" !~N !~T !~F !~p !~P"
+#color index         J_magent        brightwhite     "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" ~N !~T !~F !~p !~P"
+#color index         J_magent        cyan            "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" ~T !~F !~p !~P"
+#color index         J_magent        red             "~x \"(mithrandir|aragorn)\\.aperiodic\\.net|thorin\\.hillmgt\\.com\" ~F !~p !~P"
+
+# for background in 16 color terminal, valid background colors include:
+# base03, bg, black, any of the non brights
+
+# basic colors ---------------------------------------------------------
+color normal        brightyellow    default         
+color error         red             default         
+color tilde         black           default         
+color message       cyan            default         
+color markers       red             white           
+color attachment    white           default         
+color search        brightmagenta   default         
+#color status        J_black         J_status        
+color status        brightyellow    black           
+color indicator     brightblack     yellow          
+color tree          yellow          default                                     # arrow in threads
+
+# basic monocolor screen
+mono  bold          bold
+mono  underline     underline
+mono  indicator     reverse
+mono  error         bold
+
+# index ----------------------------------------------------------------
+
+#color index         red             default         "~D(!~p|~p)"               # deleted
+#color index         black           default         ~F                         # flagged
+#color index         brightred       default         ~=                         # duplicate messages
+#color index         brightgreen     default         "~A!~N!~T!~p!~Q!~F!~D!~P"  # the rest
+#color index         J_base          default         "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
+color index         red             default         "~A"                        # all messages
+color index         brightred       default         "~E"                        # expired messages
+color index         blue            default         "~N"                        # new messages
+color index         blue            default         "~O"                        # old messages
+color index         brightmagenta   default         "~Q"                        # messages that have been replied to
+color index         brightgreen     default         "~R"                        # read messages
+color index         blue            default         "~U"                        # unread messages
+color index         blue            default         "~U~$"                      # unread, unreferenced messages
+color index         brightyellow    default         "~v"                        # messages part of a collapsed thread
+color index         brightyellow    default         "~P"                        # messages from me
+color index         cyan            default         "~p!~F"                     # messages to me
+color index         cyan            default         "~N~p!~F"                   # new messages to me
+color index         cyan            default         "~U~p!~F"                   # unread messages to me
+color index         brightgreen     default         "~R~p!~F"                   # messages to me
+color index         red             default         "~F"                        # flagged messages
+color index         red             default         "~F~p"                      # flagged messages to me
+color index         red             default         "~N~F"                      # new flagged messages
+color index         red             default         "~N~F~p"                    # new flagged messages to me
+color index         red             default         "~U~F~p"                    # new flagged messages to me
+color index         black           red             "~D"                        # deleted messages
+color index         brightcyan      default         "~v~(!~N)"                  # collapsed thread with no unread
+color index         yellow          default         "~v~(~N)"                   # collapsed thread with some unread
+color index         green           default         "~N~v~(~N)"                 # collapsed thread with unread parent
+# statusbg used to indicated flagged when foreground color shows other status
+# for collapsed thread
+color index         red             black           "~v~(~F)!~N"                # collapsed thread with flagged, no unread
+color index         yellow          black           "~v~(~F~N)"                 # collapsed thread with some unread & flagged
+color index         green           black           "~N~v~(~F~N)"               # collapsed thread with unread parent & flagged
+color index         green           black           "~N~v~(~F)"                 # collapsed thread with unread parent, no unread inside, but some flagged
+color index         cyan            black           "~v~(~p)"                   # collapsed thread with unread parent, no unread inside, some to me directly
+color index         yellow          red             "~v~(~D)"                   # thread with deleted (doesn't differentiate between all or partial)
+#color index         yellow          default         "~(~N)"                    # messages in threads with some unread
+#color index         green           default         "~S"                       # superseded messages
+#color index         red             default         "~T"                       # tagged messages
+#color index         brightred       red             "~="                       # duplicated messages
+
+# message headers ------------------------------------------------------
+
+#color header        brightgreen     default         "^"
+color hdrdefault    brightgreen     default         
+color header        brightyellow    default         "^(From)"
+color header        blue            default         "^(Subject)"
+
+# body -----------------------------------------------------------------
+
+color quoted        blue            default         
+color quoted1       cyan            default         
+color quoted2       yellow          default         
+color quoted3       red             default         
+color quoted4       brightred       default         
+
+color signature     brightgreen     default         
+color bold          black           default         
+color underline     black           default         
+color normal        default         default         
+#
+color body          brightcyan      default         "[;:][-o][)/(|]"    # emoticons
+color body          brightcyan      default         "[;:][)(|]"         # emoticons
+color body          brightcyan      default         "[*]?((N)?ACK|CU|LOL|SCNR|BRB|BTW|CWYL|\
+                                                     |FWIW|vbg|GD&R|HTH|HTHBE|IMHO|IMNSHO|\
+                                                     |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?"
+color body          brightcyan      default         "[ ][*][^*]*[*][ ]?" # more emoticon?
+color body          brightcyan      default         "[ ]?[*][^*]*[*][ ]" # more emoticon?
+
+## pgp
+
+color body          red             default         "(BAD signature)"
+color body          cyan            default         "(Good signature)"
+color body          brightblack     default         "^gpg: Good signature .*"
+color body          brightyellow    default         "^gpg: "
+color body          brightyellow    red             "^gpg: BAD signature from.*"
+mono  body          bold                            "^gpg: Good signature"
+mono  body          bold                            "^gpg: BAD signature from.*"
+
+# yes, an insance URL regex
+color body          red             default         "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+# and a heavy handed email regex
+#color body          J_magent        default         "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+
+# Various smilies and the like
+#color body          brightwhite     default         "<[Gg]>"                            # <g>
+#color body          brightwhite     default         "<[Bb][Gg]>"                        # <bg>
+#color body          yellow          default         " [;:]-*[})>{(<|]"                  # :-) etc...
+# *bold*
+#color body          blue            default         "(^|[[:space:][:punct:]])\\*[^*]+\\*([[:space:][:punct:]]|$)"
+#mono  body          bold                            "(^|[[:space:][:punct:]])\\*[^*]+\\*([[:space:][:punct:]]|$)"
+# _underline_
+#color body          blue            default         "(^|[[:space:][:punct:]])_[^_]+_([[:space:][:punct:]]|$)"
+#mono  body          underline                       "(^|[[:space:][:punct:]])_[^_]+_([[:space:][:punct:]]|$)"
+# /italic/  (Sometimes gets directory names)
+#color body         blue            default         "(^|[[:space:][:punct:]])/[^/]+/([[:space:][:punct:]]|$)"
+#mono body          underline                       "(^|[[:space:][:punct:]])/[^/]+/([[:space:][:punct:]]|$)"
+
+# Border lines.
+#color body          blue            default         "( *[-+=#*~_]){6,}"
+
+#folder-hook .                  "color status        J_black         J_status        "
+#folder-hook inbox        "color status        J_black         yellow          "
+#folder-hook important    "color status        J_black         yellow          "
