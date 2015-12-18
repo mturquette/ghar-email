@@ -10,6 +10,8 @@ accounts = personal,linaro,deferred,baylibre
 maxsyncaccounts = 3
 ui = basic
 ignore-readonly = no
+#fsync = False
+pythonfile = ~/.local/bin/offlineimap.py
 
 ########## Advanced settings
 
@@ -95,6 +97,8 @@ quick = 10
 # presynchook = imapfilter
 # postsynchook = notifysync.sh
 #postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
+presynchook = /home/mturquette/.local/bin/maildir-notmuch-sync pre /home/mturquette/mail/baylibre
+postsynchook = /home/mturquette/.local/bin/maildir-notmuch-sync post /home/mturquette/mail/baylibre
 status_backend = plain
 
 [Account deferred]
@@ -350,17 +354,16 @@ localfolders = ~/mail/baylibre
 sep = .
 restoreatime = no
 
-nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
-				re.sub('drafts', '\[Gmail\]\/Drafts',
-				re.sub('important', '\[Gmail\]\/Important',
-				re.sub('sent', '\[Gmail\]\/Sent Mail',
-				re.sub('spam', '\[Gmail\]\/Spam',
-				re.sub('flagged', '\[Gmail\]\/Starred',
-				re.sub('trash', '\[Gmail\]\/Trash',
-				re.sub('inbox', 'INBOX',
-				re.sub('misc', 'Misc',
-				re.sub('priority', 'Priority',
-				re.sub('follow_up', 'Follow up', folder)))))))))))
+nametrans = lambda folder: {
+			    'drafts':	 '[Gmail]/Drafts',
+			    'flagged':	 '[Gmail]/Starred',
+			    'important': '[Gmail]/Important',
+			    'inbox':	 'INBOX',
+			    'spam':	 '[Gmail]/Spam',
+			    'trash':	 '[Gmail]/Trash',
+                            }.get(folder, folder)
+
+# bl-patch-review/  important/  inbox/  linux-clk/  spam/  trash/
 
 [Repository remote-baylibre]
 
@@ -373,10 +376,28 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteport = 993
 
 remoteuser = mturquette@baylibre.com
-remotepass = FIXME
+remotepasseval = decrypt_passwd("baylibre")
+
+realdelete = no
 
 subscribedonly = no
 keepalive = 60
+
+#nametrans = lambda folder: {
+#			     '[Gmail]/Drafts':	  'drafts',
+#			     '[Gmail]/Starred':	  'flagged',
+#			     '[Gmail]/Important': 'important',
+#			     'INBOX':		  'inbox',
+#			     '[Gmail]/Spam':	  'spam',
+#			     '[Gmail]/Trash':	  'trash',
+#}.get(folder, folder)
+#
+#folderfilter = lambda folder: folder not in [ '[Gmail]/Archive',
+#					      '[Gmail]/Sent',
+#					      'linux-kernel',
+#					      'linux-arm-kernel',
+#					      'linux-pm',
+#]
 
 nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('\[Gmail\]\/Drafts', 'drafts',
@@ -389,17 +410,23 @@ nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('Misc', 'misc',
 				re.sub('Priority', 'priority',
 				re.sub('Follow up', 'follow_up', folder)))))))))))
+
+# readonly = False is actually true. Hilarious! Not really. That shit is awful.
 #readonly = False
 realdelete = no
 
-#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
-#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
-folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts',
-					 '[Gmail]/Important', '[Gmail]/Sent Mail',
+#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts',
+#					 '[Gmail]/Important', '[Gmail]/Sent Mail',
+#					 '[Gmail]/Trash', 'INBOX', 'linux-kernel',
+#					 'linux-arm-kernel', 'linux-clk',
+#					 'linux-pm', 'bl-patch-review']
+folderfilter = lambda folder: folder in ['[Gmail]/Drafts',
+					 '[Gmail]/Important',
 					 '[Gmail]/Spam', '[Gmail]/Starred',
-					 '[Gmail]/Trash', 'INBOX', 'linux-kernel',
-					 'linux-arm-kernel', 'linux-clk',
-					 'linux-pm', 'bl-patch-review']
+					 '[Gmail]/Trash', 'INBOX',
+					 'linux-clk',
+					 'linux-pm',
+					 'bl-patch-review']
 
 [Repository local-deferred]
 
