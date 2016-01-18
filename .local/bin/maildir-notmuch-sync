@@ -47,7 +47,7 @@
 # Dry-run
 # ----------------------------------------------------------------------
 #
-# Call the script directly from the command line with the intial
+# Call the script directly from the command line with the initial
 # argument "--dry-run" to test the result:
 #
 #     maildir-notmuch-sync "--dry-run" "~/var/mail/accounts/personal"
@@ -430,13 +430,11 @@ Notmuch_Folder_From_Full_Path ()
 #
 #     notmuch search folder:/work/INBOX
 
-    # XXX MASSIVE PAIN INT HE ASS.
+    # XXX MASSIVE PAIN IN THE ASS.
     # Took me forever to figure out that I needed to remove the trailing
     # slash from the command below. Likely ES is running 0.17 version of
     # notmuch, or even older *shudder*
     echo "${1#$NOTMUCH_ROOT/}"
-    #echo "${NOTMUCH_ROOT/1##*/}"
-    #basename "${NOTMUCH_ROOT}"
 
 }
 
