@@ -65,13 +65,12 @@
 
 INBOX="inbox"       # (mutt's spool dir)  - both the tag and folder
 SENT="sent"         # (mutt's record dir) - both the tag and folder
-ARCHIVE="archive"   # (mutt's mbox/received) - both the tag and folder
 TRASH="trash"       # trash maildir, gmail requires for real deletion
 
 # Note that the tag/folder values (INBOX/SENT/etc) must match
 # your local maildir names, after any nametrans by offlineimap. For
-# example, my own "All Mail" is translated by offlineimap to "archive"
-# (lowercase) and thus my ARCHIVE value is "archive".
+# example, my own "INBOX" is translated by offlineimap to "inbox"
+# (lowercase) and thus my INBOX value is "inbox".
 #
 # Again, please note that these ARE case sensitive values and must
 # match your local maildir as offlineimap creates it.
@@ -486,7 +485,6 @@ Notmuch_State_To_Maildir__Move_To_Maildir ()
     local THESE_MESSAGE_IDS_TO_COPY="$(\
         notmuch search --output=messages\
         tag:"$THIS_NOTMUCH_TAG" \
-        AND tag:"$ARCHIVE" \
         NOT folder:"$THIS_NOTMUCH_FOLDER" \
         NOT folder:"$TRASH" \
         NOT tag:"$NEW_TAG")"
@@ -494,9 +492,7 @@ Notmuch_State_To_Maildir__Move_To_Maildir ()
     # We are running this function prior to the remove function below
     # but there is still the edge case wherein the user has manually
     # deleted a mail message in mutt (better to do all this with tags
-    # and virtual folders, but let's accommodate). So we should either
-    # prioritize the archive folder or cycle through the list of paths
-    # till we find one that is usable.
+    # and virtual folders, but let's accommodate).
 
     for THIS_MESSAGE_ID in $THESE_MESSAGE_IDS_TO_COPY; do
 
@@ -551,10 +547,6 @@ Notmuch_State_To_Maildir__Remove_From_Maildir ()
 # in the notmuch db). The number of folders associated with a message
 # has of course not yet changed. We need to remove the messages from
 # maildir folders from which it has been untagged.
-#
-# Note that the search below uses the $ARCHIVE folder/tag value
-# as a check that the messages have been previously indexed and processed
-# by this script.
 
     local THIS_MAILDIR_FULL_PATH="$1"
     local THIS_NOTMUCH_FOLDER="$(Notmuch_Folder_From_Full_Path $THIS_MAILDIR_FULL_PATH)"
@@ -562,7 +554,6 @@ Notmuch_State_To_Maildir__Remove_From_Maildir ()
     local THESE_MESSAGE_IDS_TO_REMOVE="$(\
         notmuch search --output=messages\
         folder:"$THIS_NOTMUCH_FOLDER" \
-        AND tag:"$ARCHIVE" \
         NOT tag:"$THIS_NOTMUCH_TAG" \
         NOT tag:"$NEW_TAG")"
 
