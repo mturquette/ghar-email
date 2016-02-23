@@ -177,6 +177,7 @@ esac
 # ----------------------------------------------------------------------
 
 TAG_SCRIPT=$HOME/.local/bin/tag_mailing_lists
+CLEANUP_SCRIPT=$HOME/.local/bin/tag_clean_up
 
 # ----------------------------------------------------------------------
 # Notmuch config checks
@@ -668,6 +669,9 @@ Notmuch_Cleanup ()
 
     # anything in sent mail should have the unread flag removed
     $RUNCMD "notmuch tag -\"$UNREAD_TAG\" -- folder:\"$SENT\""
+
+    # FIXME pass CLEANUP_SCRIPT as an argument
+    $RUNCMD $CLEANUP_SCRIPT
 
     # remove "$NEW_TAG" tags, optionally converting to "$UNREAD_TAG"
     case $MAKE_NEW_UNREAD in
