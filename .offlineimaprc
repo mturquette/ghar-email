@@ -94,9 +94,6 @@ remoterepository = remote-baylibre
 
 autorefresh = 10
 quick = 10
-# presynchook = imapfilter
-# postsynchook = notifysync.sh
-#postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
 presynchook = /home/mturquette/.local/bin/maildir-notmuch-sync pre /home/mturquette/mail/baylibre
 postsynchook = /home/mturquette/.local/bin/maildir-notmuch-sync post /home/mturquette/mail/baylibre
 status_backend = plain
@@ -426,7 +423,9 @@ folderfilter = lambda folder: folder in ['[Gmail]/Drafts',
 					 '[Gmail]/Trash', 'INBOX',
 					 'linux-clk',
 					 'linux-pm',
-					 'bl-patch-review']
+					 'bl-patch-review',
+					 'needs-review',
+					 'eas']
 
 [Repository local-deferred]
 
