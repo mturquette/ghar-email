@@ -6,8 +6,12 @@ set mailing_lists linux-kernel@vger.kernel.org \
 		  linux-pm@vger.kernel.org \
 		  linux-clk@vger.kernel.org
 
+# explicitly tag mailing lists
 for list in $mailing_lists;
 	set tag (echo $list | sed 's/@.*$//');
 	#echo $tag $list;
 	eval notmuch tag +$tag -- tag:new and to:$list and not tag:$tag
 end
+
+# add needs-review tag to mail that is new & important but not in inbox
+#eval notmuch tag +needs-review -- tag:new and folder:important and not folder:inbox
