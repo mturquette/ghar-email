@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+
+# gmail is stupid. remove needs-review tag from messages sent by me
+eval notmuch tag -needs-review -- tag:new and tag:needs-review and from:mturquette@baylibre.com
