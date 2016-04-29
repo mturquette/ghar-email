@@ -1,0 +1,3 @@
+[console_scripts]
+alot = alot.__main__:main
+

@@ -1,0 +1,10 @@
+#!/usr/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'alot==0.3.7','console_scripts','alot'
+__requires__ = 'alot==0.3.7'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('alot==0.3.7', 'console_scripts', 'alot')()
+    )
