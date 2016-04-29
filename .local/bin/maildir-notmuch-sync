@@ -671,6 +671,7 @@ Notmuch_Cleanup ()
     $RUNCMD "notmuch tag -\"$UNREAD_TAG\" -- folder:\"$SENT\""
 
     # FIXME pass CLEANUP_SCRIPT as an argument
+    # FIXME fails if script is missing. Wrap in conditional logic
     $RUNCMD $CLEANUP_SCRIPT
 
     # remove "$NEW_TAG" tags, optionally converting to "$UNREAD_TAG"

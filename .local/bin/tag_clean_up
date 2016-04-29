@@ -2,3 +2,6 @@
 
 # gmail is stupid. remove needs-review tag from messages sent by me
 eval notmuch tag -needs-review -- tag:new and tag:needs-review and from:mturquette@baylibre.com
+
+# gmail is stupid. mark sent mail as read
+eval notmuch tag -unread -- tag:new and from:mturquette@baylibre.com
