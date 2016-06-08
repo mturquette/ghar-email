@@ -139,7 +139,8 @@ TRIM_ACCOUNT_PREFIX_IN_TAGS=true
 set -o errexit
 set -o nounset
 
-# FIXME add in real opt handling. See TAG_SCRIPT FIXME below for details
+# FIXME add in real opt handling. See TAG_SCRIPT FIXME and CLEANUP_SCRIPT FIXME
+# below for details
 
 # check for special run mode
 # --dry-run (-d)
@@ -593,7 +594,9 @@ Notmuch_Update ()
 {
     $RUNCMD "notmuch new";
     # FIXME pass TAG_SCRIPT as an argument
-    $RUNCMD $TAG_SCRIPT
+    if [[ -e "$TAG_SCRIPT" ]]; then
+        $RUNCMD $TAG_SCRIPT
+    fi
 }
 
 # ----------------------------------------------------------------------
@@ -671,8 +674,9 @@ Notmuch_Cleanup ()
     $RUNCMD "notmuch tag -\"$UNREAD_TAG\" -- folder:\"$SENT\""
 
     # FIXME pass CLEANUP_SCRIPT as an argument
-    # FIXME fails if script is missing. Wrap in conditional logic
-    $RUNCMD $CLEANUP_SCRIPT
+    if [[ -e "$CLEANUP_SCRIPT" ]]; then
+        $RUNCMD $CLEANUP_SCRIPT
+    fi
 
     # remove "$NEW_TAG" tags, optionally converting to "$UNREAD_TAG"
     case $MAKE_NEW_UNREAD in
