@@ -12,7 +12,7 @@
 #
 [database]
 # Rely on default, which is $HOME/mail
-#path=$HOME/mail
+path=/home/mturquette/mail
 
 # User configuration
 #
