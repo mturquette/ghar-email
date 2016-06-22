@@ -29,7 +29,7 @@ tabwidth = 4
 # initial command when none is given as argument:
 #initial_command = 'search tag:inbox and tag:unread ; search tag:linux-clk and tag:unread ; search tag:flagged'
 #initial_command = 'search tag:inbox and tag:unread ; search tag:linux-clk and tag:unread'
-initial_command = 'search tag:inbox ; search tag:needs-review ; search tag:eas ; search tag:needs-review and @mike'
+initial_command = 'search tag:inbox ; search tag:needs-review ; search tag:eas'
 
 # in case more than one account has an address book:
 # Set this to True to make tab completion for recipients during compose only

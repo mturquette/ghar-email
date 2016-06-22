@@ -3,6 +3,7 @@
 # change the list below to match your mailing lists
 set mailing_lists linux-kernel@vger.kernel.org \
 		  linux-arm-kernel@lists.infradead.org \
+		  linux-amlogic@lists.infradead.org \
 		  linux-pm@vger.kernel.org \
 		  linux-clk@vger.kernel.org
 
