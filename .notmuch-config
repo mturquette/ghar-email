@@ -10,9 +10,9 @@
 # Notmuch will store its database within a sub-directory of the path
 # configured here named ".notmuch".
 #
+
 [database]
-# Rely on default, which is $HOME/mail
-path=/home/mturquette/mail
+path=/Users/mturquette/mail
 
 # User configuration
 #
@@ -29,10 +29,11 @@ path=/home/mturquette/mail
 # recipient list of replies, and will set the From address based on the
 # address to which the original email was addressed.
 #
+
 [user]
 name=Michael Turquette
 primary_email=mturquette@baylibre.com
-other_email=mike.turquette@linaro.org;mturquette@linaro.org;spimdotz@gmail.com
+other_email=mike.turquette@linaro.org;mturquette@linaro.org;spimdotz@gmail.com;
 #other_email=mturquette@ti.com;mturquette@gmail.com;mturquette@deferred.io;
 
 # Configuration for "notmuch new"
@@ -48,6 +49,7 @@ other_email=mike.turquette@linaro.org;mturquette@linaro.org;spimdotz@gmail.com
 #		NOTE: *Every* file/directory that goes by one of those names will
 #		be ignored, independent of its depth/location in the mail store.
 #
+
 [new]
 tags=new
 ignore=
@@ -73,5 +75,30 @@ ignore=
 #	and update tags, while the "notmuch tag" and "notmuch restore"
 #	commands will notice tag changes and update flags in filenames
 #
+
 [maildir]
-synchronize_flags=true
+synchronize_flags=false
+
+# Search configuration
+#
+# The following option is supported here:
+#
+#	exclude_tags
+#		A ;-separated list of tags that will be excluded from
+#		search results by default.  Using an excluded tag in a
+#		query will override that exclusion.
+#
+
+[search]
+exclude_tags=
+
+# Cryptography related configuration
+#
+# The following option is supported here:
+#
+#	gpg_path
+#		binary name or full path to invoke gpg.
+#
+
+[crypto]
+gpg_path=gpg2

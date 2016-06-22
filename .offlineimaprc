@@ -5,8 +5,7 @@
 [general]
 
 metadata = ~/.offlineimap
-#accounts = personal,ti,linaro,deferred,ti-exchange,skully
-accounts = personal,linaro,deferred,baylibre
+accounts = personal,deferred,baylibre
 maxsyncaccounts = 3
 ui = basic
 ignore-readonly = no
@@ -63,30 +62,6 @@ quick = 10
 # postsynchook = notifysync.sh
 status_backend = plain
 
-#[Account ti]
-#
-#localrepository = local-ti
-#remoterepository = remote-ti
-#
-#autorefresh = 10
-#quick = 10
-## presynchook = imapfilter
-## postsynchook = notifysync.sh
-##postsynchook = ionice -c 3 chrt --idle 0 /bin/bash -c "/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new"
-#status_backend = plain
-
-[Account linaro]
-
-localrepository = local-linaro
-remoterepository = remote-linaro
-
-autorefresh = 10
-quick = 10
-# presynchook = imapfilter
-# postsynchook = notifysync.sh
-#postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
-status_backend = plain
-
 [Account baylibre]
 
 localrepository = local-baylibre
@@ -108,18 +83,6 @@ quick = 10
 # presynchook = imapfilter
 # postsynchook = notifysync.sh
 status_backend = plain
-
-#[Account ti-exchange]
-#
-#localrepository = local-ti-exchange
-#remoterepository = remote-ti-exchange
-#
-#autorefresh = 10
-#quick = 10
-## presynchook = imapfilter
-## postsynchook = noti-exchangefysync.sh
-##postsynchook = ionice -c 3 chrt --idle 0 /bin/bash -c "/home/mturquette/.local/bin/notmuch new && /home/mturquette/.local/bin/afew --tag --new"
-#status_backend = plain
 
 [Repository local-spimdotz]
 
@@ -153,7 +116,7 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 remoteport = 993
 
 remoteuser = spimdotz@gmail.com
-remotepass = FIXME
+remotepasseval = decrypt_passwd("spimdotz")
 
 subscribedonly = no
 keepalive = 60
@@ -213,7 +176,7 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteport = 993
 
 remoteuser = mturquette@gmail.com
-remotepass = FIXME
+remotepasseval = decrypt_passwd("personal")
 
 subscribedonly = no
 keepalive = 60
@@ -235,112 +198,6 @@ realdelete = no
 
 #folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
 #folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
-folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
-
-#[Repository local-ti]
-#
-#type = Maildir
-#
-#localfolders = ~/mail/offlineimap/ti
-#sep = .
-#restoreatime = no
-#
-#nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
-#				re.sub('drafts', '\[Gmail\]\/Drafts',
-#				re.sub('important', '\[Gmail\]\/Important',
-#				re.sub('sent', '\[Gmail\]\/Sent Mail',
-#				re.sub('spam', '\[Gmail\]\/Spam',
-#				re.sub('flagged', '\[Gmail\]\/Starred',
-#				re.sub('trash', '\[Gmail\]\/Trash',
-#				re.sub('inbox', 'INBOX',
-#				re.sub('misc', 'Misc',
-#				re.sub('priority', 'Priority',
-#				re.sub('follow_up', 'Follow up', folder)))))))))))
-#
-#[Repository remote-ti]
-#
-#type = Gmail
-#remotehost = imap.gmail.com
-#
-#ssl = yes
-#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-#
-#remoteport = 993
-#
-#remoteuser = mturquette@ti.com
-#remotepass = FIXME
-#
-#subscribedonly = no
-#keepalive = 60
-#
-#nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
-#				re.sub('\[Gmail\]\/Drafts', 'drafts',
-#				re.sub('\[Gmail\]\/Important', 'important',
-#				re.sub('\[Gmail\]\/Sent Mail', 'sent',
-#				re.sub('\[Gmail\]\/Spam', 'spam',
-#				re.sub('\[Gmail\]\/Starred', 'flagged',
-#				re.sub('\[Gmail\]\/Trash', 'trash',
-#				re.sub('INBOX', 'inbox',
-#				re.sub('Misc', 'misc',
-#				re.sub('Priority', 'priority',
-#				re.sub('Follow up', 'follow_up', folder)))))))))))
-#
-##readonly = False
-#realdelete = no
-#
-#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
-
-[Repository local-linaro]
-
-type = Maildir
-
-localfolders = ~/mail/linaro
-sep = .
-restoreatime = no
-
-nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
-				re.sub('drafts', '\[Gmail\]\/Drafts',
-				re.sub('important', '\[Gmail\]\/Important',
-				re.sub('sent', '\[Gmail\]\/Sent Mail',
-				re.sub('spam', '\[Gmail\]\/Spam',
-				re.sub('flagged', '\[Gmail\]\/Starred',
-				re.sub('trash', '\[Gmail\]\/Trash',
-				re.sub('inbox', 'INBOX',
-				re.sub('misc', 'Misc',
-				re.sub('priority', 'Priority',
-				re.sub('follow_up', 'Follow up', folder)))))))))))
-
-[Repository remote-linaro]
-
-type = Gmail
-remotehost = imap.gmail.com
-
-ssl = yes
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-
-remoteport = 993
-
-remoteuser = mike.turquette@linaro.org
-remotepass = FIXME
-
-subscribedonly = no
-keepalive = 60
-
-nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
-				re.sub('\[Gmail\]\/Drafts', 'drafts',
-				re.sub('\[Gmail\]\/Important', 'important',
-				re.sub('\[Gmail\]\/Sent Mail', 'sent',
-				re.sub('\[Gmail\]\/Spam', 'spam',
-				re.sub('\[Gmail\]\/Starred', 'flagged',
-				re.sub('\[Gmail\]\/Trash', 'trash',
-				re.sub('INBOX', 'inbox',
-				re.sub('Misc', 'misc',
-				re.sub('Priority', 'priority',
-				re.sub('Follow up', 'follow_up', folder)))))))))))
-#readonly = False
-realdelete = no
-
-#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
 folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
 
 [Repository local-baylibre]
@@ -360,15 +217,14 @@ nametrans = lambda folder: {
 			    'trash':	 '[Gmail]/Trash',
                             }.get(folder, folder)
 
-# bl-patch-review/  important/  inbox/  linux-clk/  spam/  trash/
-
 [Repository remote-baylibre]
 
 type = Gmail
 remotehost = imap.gmail.com
 
 ssl = yes
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = /usr/local/etc/openssl/cert.pem
 
 remoteport = 993
 
@@ -459,7 +315,7 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteport = 993
 
 remoteuser = mturquette@deferred.io
-remotepass = FIXME
+remotepasseval = decrypt_passwd("deferred")
 
 subscribedonly = no
 keepalive = 60
@@ -476,112 +332,6 @@ nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('Priority', 'priority',
 				re.sub('Follow up', 'follow_up', folder)))))))))))
 
-#readonly = False
-realdelete = no
-
-#folderfilter = lambda folder: folder in ['\[Gmail\]\/All Mail', '\[Gmail\]\/Drafts']
-folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts']
-
-#[Repository local-ti-exchange]
-#
-#type = Maildir
-#
-#localfolders = ~/mail/offlineimap/ti-exchange
-#sep = .
-#restoreatime = no
-#
-#nametrans = lambda folder:	re.sub('inbox' ,'INBOX',
-#				re.sub('drafts', 'Drafts',
-#				re.sub('sent', 'Sent Items',
-#				re.sub('spam', 'Junk E-Mail',
-#				re.sub('trash', 'Deleted Items', folder)))))
-#
-#[Repository remote-ti-exchange]
-#
-#type = IMAP
-#remotehost = imap.mail.ti.com
-#
-#ssl = yes
-#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-#
-#remoteport = 993
-#
-#remoteuser = a0271365
-#remotepass = FIXME
-#
-#subscribedonly = no
-#keepalive = 60
-#
-#nametrans = lambda folder:	re.sub('INBOX', 'inbox',
-#				re.sub('Drafts', 'drafts',
-#				re.sub('Sent Items', 'sent',
-#				re.sub('Junk E-Mail', 'spam',
-#				re.sub('Deleted Items', 'trash', folder)))))
-#
-##readonly = False
-#realdelete = no
-#
-#folderfilter = lambda folder: folder in ['INBOX', 'Drafts', 'Sent Items', 'Junk E-Mail', 'Deleted Items']
-
-[Account skully]
-
-localrepository = local-skully
-remoterepository = remote-skully
-
-autorefresh = 10
-quick = 10
-# presynchook = imapfilter
-# postsynchook = notifysync.sh
-#postsynchook = ionice -c 3 chrt --idle 0 /bin/sh -c "notmuch new && afew --tag --new"
-status_backend = plain
-
-[Repository local-skully]
-
-type = Maildir
-
-localfolders = ~/mail/skully
-sep = .
-restoreatime = no
-
-nametrans = lambda folder:	re.sub('archive' ,'\[Gmail\]\/All Mail',
-				re.sub('drafts', '\[Gmail\]\/Drafts',
-				re.sub('important', '\[Gmail\]\/Important',
-				re.sub('sent', '\[Gmail\]\/Sent Mail',
-				re.sub('spam', '\[Gmail\]\/Spam',
-				re.sub('flagged', '\[Gmail\]\/Starred',
-				re.sub('trash', '\[Gmail\]\/Trash',
-				re.sub('inbox', 'INBOX',
-				re.sub('misc', 'Misc',
-				re.sub('priority', 'Priority',
-				re.sub('follow_up', 'Follow up', folder)))))))))))
-
-[Repository remote-skully]
-
-type = Gmail
-remotehost = imap.gmail.com
-
-ssl = yes
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-
-remoteport = 993
-
-remoteuser = mturquette@skullyhelmets.com
-remotepass = FIXME
-
-subscribedonly = no
-keepalive = 60
-
-nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
-				re.sub('\[Gmail\]\/Drafts', 'drafts',
-				re.sub('\[Gmail\]\/Important', 'important',
-				re.sub('\[Gmail\]\/Sent Mail', 'sent',
-				re.sub('\[Gmail\]\/Spam', 'spam',
-				re.sub('\[Gmail\]\/Starred', 'flagged',
-				re.sub('\[Gmail\]\/Trash', 'trash',
-				re.sub('INBOX', 'inbox',
-				re.sub('Misc', 'misc',
-				re.sub('Priority', 'priority',
-				re.sub('Follow up', 'follow_up', folder)))))))))))
 #readonly = False
 realdelete = no
 
