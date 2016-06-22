@@ -116,7 +116,7 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 remoteport = 993
 
 remoteuser = spimdotz@gmail.com
-remotepasseval = decrypt_passwd("spimdotz")
+remotepasseval = decrypt_passwd("gmail.com/spimdotz@gmail.com/imap")
 
 subscribedonly = no
 keepalive = 60
@@ -176,7 +176,7 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteport = 993
 
 remoteuser = mturquette@gmail.com
-remotepasseval = decrypt_passwd("personal")
+remotepasseval = decrypt_passwd("gmail.com/mturquette@gmail.com/imap")
 
 subscribedonly = no
 keepalive = 60
@@ -229,7 +229,7 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 remoteport = 993
 
 remoteuser = mturquette@baylibre.com
-remotepasseval = decrypt_passwd("baylibre")
+remotepasseval = decrypt_passwd("gmail.com/mturquette@baylibre.com")
 
 realdelete = no
 
@@ -315,7 +315,7 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteport = 993
 
 remoteuser = mturquette@deferred.io
-remotepasseval = decrypt_passwd("deferred")
+remotepasseval = decrypt_passwd("gmail.com/mturquette@deferred.io/imap")
 
 subscribedonly = no
 keepalive = 60
