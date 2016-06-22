@@ -30,11 +30,15 @@ unset message_cachedir
 # Collapse all threads when switching folders
 folder-hook . "exec collapse-all"
 
+# Do not modify the folder
+set read_only
+
 #----------------------------------------------------------------------------
 
 # A macro to reload the contents of the mailbox. Use this when the results of a
 # query have changed, and you want to see them.
-macro index "#" '<sync-mailbox><change-folder>^<enter>' "Reload mailbox"
+#macro index "#" '<sync-mailbox><change-folder>^<enter>' "Reload mailbox"
+macro index "#" '<change-folder-readonly>^<enter>' "Reload mailbox"
 
 # List or alter notmuch tags of a message or set of tagged messages, by passing
 # through a script to the notmuch CLI.
@@ -53,35 +57,38 @@ macro index,pager "l" "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" 
 # The default search stem to use. May be empty.
 # Beware! Setting "pipe_decode" in .muttrc defeats the method used below
 set my_default_search=""
-macro index "/" "<shell-escape>prompt_mkdir $folder$my_default_search <enter><change-folder>?" "Create a new notmuchfs query mailbox"
+macro index "/" "<shell-escape>prompt_mkdir $folder/$my_default_search <enter><change-folder-readonly>?" "Create a new notmuchfs query mailbox"
 
 # custom tag macro
 macro index,pager ",tw" "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +watch<enter>" "Add 'watch' tag"
 
 #macro index,pager "e"   "<pipe-message>cat > /home/mturquette/msg"
-macro index,pager "e"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -inbox<enter>" "Remove 'inbox' tag"
+macro index,pager "e"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -inbox<enter>" "Remove 'inbox' tag"
 
-macro index,pager "I"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -unread<enter>" "Remove 'unread' tag"
-macro index,pager "U"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +unread<enter><toggle-new>" "Add 'unread' tag"
+macro index,pager "I"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -unread<enter>" "Remove 'unread' tag"
+macro index,pager "U"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +unread<enter><toggle-new>" "Add 'unread' tag"
 
-macro index,pager "s"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +flagged<enter>" "Add 'flagged' tag"
-macro index,pager "S"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -flagged<enter>" "Remove 'flagged' tag"
+macro index,pager "s"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +flagged<enter>" "Add 'flagged' tag"
+macro index,pager "S"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -flagged<enter>" "Remove 'flagged' tag"
 # need replacement for S - new notmuch query
 # need replacement for s - save message
 
-macro index,pager "+"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +important<enter>" "Add 'important' tag"
-macro index,pager "-"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -important<enter>" "Remove 'important' tag"
+macro index,pager "+"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +important<enter>" "Add 'important' tag"
+macro index,pager "-"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag -important<enter>" "Remove 'important' tag"
 
-macro index,pager "!"   "<pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +spam<enter>" "Add 'spam' tag"
+macro index,pager "!"   "<tag-prefix><pipe-message>formail -d -xMessage-id: -s | tr -d \"<>\" | notmuch_tag +spam<enter>" "Add 'spam' tag"
 
 # custom navigation macro
-macro index,pager gi <change-folder>"=inbox<enter>" "Go to Inbox"
-macro index,pager gs <change-folder>"=tag:flagged<enter>" "Go to Starred"
-macro index,pager gd <change-folder>"=tag:drafts<enter>" "Go to Drafts"
-macro index,pager gt <change-folder>"=tag:sent<enter>" "Go to Sent"
-macro index,pager gl <change-folder>
+macro index,pager gi <change-folder-readonly>"=inbox<enter>" "Go to Inbox"
+macro index,pager gs <change-folder-readonly>"=tag:flagged<enter>" "Go to Starred"
+macro index,pager gd <change-folder-readonly>"=tag:drafts<enter>" "Go to Drafts"
+macro index,pager gt <change-folder-readonly>"=tag:sent<enter>" "Go to Sent"
+macro index,pager gl <change-folder-readonly>?
 # non-standard, just for me
-macro index,pager gc <change-folder>"=clk" "Go to linux-clk"
+macro index,pager gc <change-folder-readonly>"=linux-clk<enter>" "Go to linux-clk"
+
+macro index,pager n <next-entry> "Read next message"
+macro index,pager p <previous-entry> "Read previous message"
 
 # pager macros, deviate a bit from Gmail:
 # In Gmail we use j/k to navigate to next/previous threads/conversations and
@@ -89,8 +96,6 @@ macro index,pager gc <change-folder>"=clk" "Go to linux-clk"
 # In mutt we use j/k to scroll through a message body (like vim), and up/down
 # arrows to navigate to next/previous threads/conversations
 macro pager u <exit> "Back to threadlist"
-macro pager n <next-subthread> "Read next message"
-macro pager p <previous-subthread> "Read previous message"
 macro pager r <reply> "Reply"
 macro pager a <group-reply> "Reply all"
 
@@ -98,6 +103,9 @@ macro index,pager c <mail> "Compose"
 
 macro index x <tag-thread> "Select conversation"
 # note, 't' still tags individual entires/messages
+
+# Save patches to ~/Dropbox/patches
+macro index,pager C <tag-prefix><copy-message>"~/Dropbox/patches/" "Select conversation"
 
 # Colorise messages with particular flags.
 # e.g.:
