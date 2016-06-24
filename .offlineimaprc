@@ -69,8 +69,8 @@ remoterepository = remote-baylibre
 
 autorefresh = 10
 quick = 10
-presynchook = /home/mturquette/.local/bin/maildir-notmuch-sync pre /home/mturquette/mail/baylibre
-postsynchook = /home/mturquette/.local/bin/maildir-notmuch-sync post /home/mturquette/mail/baylibre
+presynchook = /Users/mturquette/.local/bin/maildir-notmuch-sync pre /Users/mturquette/mail/baylibre
+postsynchook = /Users/mturquette/.local/bin/maildir-notmuch-sync post /Users/mturquette/mail/baylibre
 status_backend = plain
 
 [Account deferred]
@@ -221,6 +221,7 @@ nametrans = lambda folder: {
 
 type = Gmail
 remotehost = imap.gmail.com
+auth_mechanisms = LOGIN
 
 ssl = yes
 #sslcacertfile = /etc/ssl/certs/ca-certificates.crt
