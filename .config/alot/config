@@ -90,7 +90,7 @@ c = compose
 		sendmail_command = msmtpq -a baylibre -t
 		#sendmail_command = msmtp -a baylibre -t
 		#sent_box = maildir:///home/mturquette/mail/linaro
-		draft_box = maildir:///home/mturquette/mail/baylibre/drafts
+		draft_box = maildir:///Users/mturquette/mail/baylibre/drafts
 
 	# see,
 	# http://alot.readthedocs.org/en/latest/configuration/contacts_completion.html
