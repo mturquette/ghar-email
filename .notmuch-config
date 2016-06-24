@@ -77,7 +77,7 @@ ignore=
 #
 
 [maildir]
-synchronize_flags=false
+synchronize_flags=true
 
 # Search configuration
 #
