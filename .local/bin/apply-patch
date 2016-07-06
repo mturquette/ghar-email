@@ -1,0 +1,6 @@
+#!/usr/bin/env fish
+
+cat - > ./temp.patch
+
+git am -s3 ./temp.patch
+and gmsg
