@@ -482,9 +482,11 @@ Notmuch_State_To_Maildir__Move_To_Maildir ()
     local THIS_MAILDIR_FULL_PATH="$1"
     local THIS_NOTMUCH_FOLDER="$(Notmuch_Folder_From_Full_Path $THIS_MAILDIR_FULL_PATH)"
     local THIS_NOTMUCH_TAG="$(Notmuch_Tag_From_Full_Path $THIS_MAILDIR_FULL_PATH)"
+    local THIS_ACCOUNT_FOLDER="$(dirname $THIS_NOTMUCH_FOLDER)"
     local THESE_MESSAGE_IDS_TO_COPY="$(\
         notmuch search --output=messages\
         tag:"$THIS_NOTMUCH_TAG" \
+        path:"$THIS_ACCOUNT_FOLDER/**"\
         NOT folder:"$THIS_NOTMUCH_FOLDER" \
         NOT folder:"$TRASH" \
         NOT tag:"$NEW_TAG")"
@@ -653,7 +655,9 @@ Maildir_State_To_Notmuch__Remove_Tags_From_Notmuch ()
     local THIS_MAILDIR_FULL_PATH="$1"
     local THIS_NOTMUCH_FOLDER="$(Notmuch_Folder_From_Full_Path $THIS_MAILDIR_FULL_PATH)"
     local THIS_NOTMUCH_TAG="$(Notmuch_Tag_From_Full_Path $THIS_MAILDIR_FULL_PATH)"
-    local THIS_NOTMUCH_QUERY="tag:\"$THIS_NOTMUCH_TAG\" \
+    local THIS_ACCOUNT_FOLDER="$(dirname $THIS_NOTMUCH_FOLDER)"
+    local THIS_NOTMUCH_QUERY="tag:\"$THIS_NOTMUCH_TAG\"\
+                              path:\"$THIS_ACCOUNT_FOLDER/**\"\
                               NOT folder:\"$THIS_NOTMUCH_FOLDER\" \
                               NOT folder:\"$TRASH\""
     local THIS_COUNT="$(notmuch count $THIS_NOTMUCH_QUERY)"
