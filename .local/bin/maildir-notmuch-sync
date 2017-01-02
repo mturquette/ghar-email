@@ -147,11 +147,11 @@ set -o nounset
 # --help    (-h)
 
 case ${1:-} in
-    *-h*) echo "usage: $0 [--dry-run] subcmd maildir_account_root_path";
+    --help|-h) echo "usage: $0 [--dry-run] subcmd maildir_account_root_path";
 	  echo "Valid sub commands are \"pre\" and \"post\"";
 	  exit;
 	  ;;
-    *-d*) RUNCMD=echo; DRYRUN=true; DRYRUN_MSG="- DRYRUN (no changes will be made)"; shift; ;;
+    --dry-run|-d) RUNCMD=echo; DRYRUN=true; DRYRUN_MSG="- DRYRUN (no changes will be made)"; shift; ;;
     *)    RUNCMD=eval; DRYRUN=false ;;
 esac
 
