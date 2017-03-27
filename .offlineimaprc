@@ -211,7 +211,6 @@ restoreatime = no
 nametrans = lambda folder: {
 			    'drafts':	 '[Gmail]/Drafts',
 			    'flagged':	 '[Gmail]/Starred',
-			    'important': '[Gmail]/Important',
 			    'inbox':	 'INBOX',
 			    'spam':	 '[Gmail]/Spam',
 			    'trash':	 '[Gmail]/Trash',
@@ -224,7 +223,6 @@ remotehost = imap.gmail.com
 auth_mechanisms = LOGIN
 
 ssl = yes
-#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 sslcacertfile = /usr/local/etc/openssl/cert.pem
 
 remoteport = 993
@@ -237,25 +235,8 @@ realdelete = no
 subscribedonly = no
 keepalive = 60
 
-#nametrans = lambda folder: {
-#			     '[Gmail]/Drafts':	  'drafts',
-#			     '[Gmail]/Starred':	  'flagged',
-#			     '[Gmail]/Important': 'important',
-#			     'INBOX':		  'inbox',
-#			     '[Gmail]/Spam':	  'spam',
-#			     '[Gmail]/Trash':	  'trash',
-#}.get(folder, folder)
-#
-#folderfilter = lambda folder: folder not in [ '[Gmail]/Archive',
-#					      '[Gmail]/Sent',
-#					      'linux-kernel',
-#					      'linux-arm-kernel',
-#					      'linux-pm',
-#]
-
 nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('\[Gmail\]\/Drafts', 'drafts',
-				re.sub('\[Gmail\]\/Important', 'important',
 				re.sub('\[Gmail\]\/Sent Mail', 'sent',
 				re.sub('\[Gmail\]\/Spam', 'spam',
 				re.sub('\[Gmail\]\/Starred', 'flagged',
@@ -263,19 +244,13 @@ nametrans = lambda folder:	re.sub('\[Gmail\]\/All Mail', 'archive',
 				re.sub('INBOX', 'inbox',
 				re.sub('Misc', 'misc',
 				re.sub('Priority', 'priority',
-				re.sub('Follow up', 'follow_up', folder)))))))))))
+				re.sub('Follow up', 'follow_up', folder))))))))))
 
 # readonly = False is actually true. Hilarious! Not really. That shit is awful.
 #readonly = False
 realdelete = no
 
-#folderfilter = lambda folder: folder in ['[Gmail]/All Mail', '[Gmail]/Drafts',
-#					 '[Gmail]/Important', '[Gmail]/Sent Mail',
-#					 '[Gmail]/Trash', 'INBOX', 'linux-kernel',
-#					 'linux-arm-kernel', 'linux-clk',
-#					 'linux-pm', 'bl-patch-review']
 folderfilter = lambda folder: folder in ['[Gmail]/Drafts',
-					 '[Gmail]/Important',
 					 '[Gmail]/Spam', '[Gmail]/Starred',
 					 '[Gmail]/Trash', 'INBOX',
 					 'linux-clk',

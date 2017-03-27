@@ -33,7 +33,7 @@ path=/Users/mturquette/mail
 [user]
 name=Michael Turquette
 primary_email=mturquette@baylibre.com
-other_email=mike.turquette@linaro.org;mturquette@linaro.org;spimdotz@gmail.com;
+#other_email=mike.turquette@linaro.org;mturquette@linaro.org;spimdotz@gmail.com;
 #other_email=mturquette@ti.com;mturquette@gmail.com;mturquette@deferred.io;
 
 # Configuration for "notmuch new"

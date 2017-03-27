@@ -1,20 +1,14 @@
+#!/usr/local/bin/fish
 #!/bin/bash
 
-PID=$(pgrep offlineimap)
-LOCK=/var/lock/mail
+#PID=$(pgrep -f offlineimap)
 
-# offlineimap freezes up a lot.  kill if previous job is still running
-[[ -n "$PID" ]] && kill $PID
+# offlineimap freezes up a lot. kill if previous job is still running
+#[[ -n "$PID" ]] && kill -9 $PID
 
-# sub-shell below is locked to prevent concurrency
-(
-	# bail early if lock is held
-	flock -n 9 || exit 1
+/usr/local/bin/offlineimap -o -a baylibre -u basic | /usr/bin/logger
 
-	/usr/bin/offlineimap -o -a baylibre -u basic | /usr/bin/logger
-) 9>$LOCK
-
-exit 0
+#exit 0
 
 # run this script periodically with the following cron job
 # */15 * * * *  ~/.local/bin/mail.cron
