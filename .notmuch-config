@@ -12,7 +12,7 @@
 #
 
 [database]
-path=/Users/mturquette/mail
+path=/Users/mturquette/.mail
 
 # User configuration
 #
@@ -52,7 +52,7 @@ primary_email=mturquette@baylibre.com
 
 [new]
 tags=new
-ignore=
+ignore=*.json;
 
 # Maildir compatibility configuration
 #
@@ -100,5 +100,5 @@ exclude_tags=
 #		binary name or full path to invoke gpg.
 #
 
-[crypto]
-gpg_path=gpg2
+#[crypto]
+#gpg_path=gpg2
